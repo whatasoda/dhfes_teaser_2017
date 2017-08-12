@@ -22,4 +22,4 @@
     window.glmx.vec4     = window.vec4
   } else
     console.warn('Optimising gl-matrix is faild!');
-})(window.DHFT2017 || {})
+})(window.DHFT2017 = window.DHFT2017 || {})

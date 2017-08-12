@@ -3,7 +3,6 @@
 
   class RendererBase {
     constructor (width, height, shaders, option = {}) {
-      // RedPlier.World.renderers.push(this)
       this.availability = true
       this.canvas = document.createElement("canvas")
       this.width = width
@@ -15,11 +14,20 @@
       this.gl = gl
       for (const shader of shaders) {
         let shaderTmp = new shader(gl)
-        if (shader.availability)
+        if (shaderTmp.availability)
           this.shaders.push(shaderTmp)
       }
       // gl.enable(gl.CULL_FACE)
-      gl.enable(gl.DEPTH_TEST)
+      // gl.depthFunc(gl.LEQUAL);
+      gl.enable(gl.BLEND);
+      // gl.enable(gl.DEPTH_TEST)
+      // gl.blendEquation(gl.FUNC_ADD)
+      gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
+      // gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
+    }
+
+    setCurrent () {
+      DHFT2017.RendererBase.using = this
     }
 
     render () {
@@ -60,6 +68,7 @@
 
   }
   DHFT2017.RendererBase = RendererBase
+  DHFT2017.RendererBase.using = null
 
   class ShaderBase {
 
@@ -91,7 +100,8 @@
             while ( (info = gl.getActiveAttrib(prog, attrCount++)) )
               attributes[info.name] = gl.getAttribLocation(prog, info.name)
             while ( (info = gl.getActiveUniform(prog, unifCount++)) )
-              if ( (tmpUniform = gl.getUniformLocation(prog, info.name)) ) uniforms[info.name] = tmpUniform
+              if ( (tmpUniform = gl.getUniformLocation(prog, info.name)) )
+                uniforms[info.name] = tmpUniform
             return {
               prog: prog, vert: vert, frag: frag,
               locs: { attr: attributes, unif: uniforms, },
@@ -130,4 +140,6 @@
 
 
 
-})(window.DHFT2017 || {})
+
+
+})(window.DHFT2017 = window.DHFT2017 || {})

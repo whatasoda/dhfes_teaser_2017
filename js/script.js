@@ -1,4 +1,6 @@
 ;((DHFT2017) => {
+
+  document.getElementsByTagName('link')[0].remove()
   /* import scripts */
   const scripts = document.getElementsByTagName('script')
   const initialSrc = 'js/script.js'
@@ -8,7 +10,7 @@
       initialTag = script
       break
     }
-    
+
   if (initialTag) {
     ((files) => {
       if (Array.isArray(files))
@@ -22,14 +24,18 @@
       {name:'gl-matrix-min',    async: false,},
       {name:'optimiseGLMatrix', async: false,},
       {name:'MathExtend',       async: false,},
+      {name:'Util',             async: false,},
+      {name:'Starter',          async: false,},
       {name:'initWebGL',        async: false,},
+      {name:'Euler',            async: false,},
+      {name:'Camera',           async: false,},
+      {name:'particle.vert',    async: false,},
+      {name:'particle.frag',    async: false,},
+      {name:'particle',         async: false,},
+      {name:'main',             async: false,},
     ])
   }
   /* import scripts END */
 
-  // const originalRandom = Math.generateRandom(
-  //   Math.floor(Math.random() * (1 << 30)),
-  //   Math.floor(Math.random() * (1 << 30)), 17, 8, 15)
-  // console.log(`Using Seed Value: [u: ${originalRandom.u}, v: ${originalRandom.v}, sequence: ${originalRandom.x}-${originalRandom.y}-${originalRandom.z} ]`)
 
-})(window.DHFT2017 || {})
+})(window.DHFT2017 = window.DHFT2017 || {})

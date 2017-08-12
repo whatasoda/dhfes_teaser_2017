@@ -28,4 +28,4 @@
     return Random
   }
   Math.generateRandom = generateRandom
-})(window.DHFT2017 || {})
+})(window.DHFT2017 = window.DHFT2017 || {})
