@@ -8,8 +8,17 @@
   const Starter = {
 
     animate: function () {
-      if (DHFT2017.RendererBase.using)
+
+      if (
+        DHFT2017.RendererBase.using &&
+        DHFT2017.Camera.using &&
+        DHFT2017.Particle.using
+      ) {
+        DHFT2017.Particle.using.calc()
+        DHFT2017.Camera.using.aspect = DHFT2017.RendererBase.using.canvas.width / DHFT2017.RendererBase.using.canvas.height
+        DHFT2017.RendererBase.using.gl.viewport(0, 0, DHFT2017.RendererBase.using.canvas.width, DHFT2017.RendererBase.using.canvas.height)
         DHFT2017.RendererBase.using.render()
+      }
       Starter.currentFrame = requestAnimationFrame(Starter.animate)
     },
 

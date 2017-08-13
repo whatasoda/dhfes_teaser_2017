@@ -10,7 +10,7 @@
       this.shaders = []
       this.clearDepth = option.clearDepth || 1
       this.clearColor = option.clearColor || glmx.vec4.fromValues(0,0,0,1)
-      const gl = this.canvas.getContext('webgl2') || this.canvas.getContext('experimental-webgl2')
+      const gl = this.canvas.getContext('webgl2', {antialias: true}) || this.canvas.getContext('experimental-webgl2')
       this.gl = gl
       for (const shader of shaders) {
         let shaderTmp = new shader(gl)
@@ -97,8 +97,10 @@
             let tmpUniform, info,
               attrCount = 0,
               unifCount = 0
-            while ( (info = gl.getActiveAttrib(prog, attrCount++)) )
+            while ( (info = gl.getActiveAttrib(prog, attrCount++)) ) {
+              console.log(info.name + ':' + info.type);
               attributes[info.name] = gl.getAttribLocation(prog, info.name)
+            }
             while ( (info = gl.getActiveUniform(prog, unifCount++)) )
               if ( (tmpUniform = gl.getUniformLocation(prog, info.name)) )
                 uniforms[info.name] = tmpUniform

@@ -1,0 +1,25 @@
+{
+  "name": "dhfes_teaser_2017",
+  "version": "1.0.0",
+  "description": "WebGL",
+  "main": "index.js",
+  "dependencies": {
+    "fs-extra": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "GLSLConvert": "node util/glslConverter.js",
+    "watch:GLSLConvert": "watch 'npm run GLSLConvert' glsl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whatasoda/dhfes_teaser_2017.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whatasoda/dhfes_teaser_2017/issues"
+  },
+  "homepage": "https://github.com/whatasoda/dhfes_teaser_2017#readme"
+}
