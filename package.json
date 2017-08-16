@@ -1,0 +1,25 @@
+{
+  "name": "dhfes_teaser_2017",
+  "version": "1.0.0",
+  "description": "##CSSの運用 * 基本的にはシングルクラスを採用 * CSS設計はFLOCSS * なので、命名規則はMindBEMding",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taku-mtzk/dhfes_teaser_2017.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taku-mtzk/dhfes_teaser_2017/issues"
+  },
+  "homepage": "https://github.com/taku-mtzk/dhfes_teaser_2017#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-csscomb": "^3.0.8",
+    "gulp-sass": "^3.1.0",
+    "gulp-sass-glob": "^1.0.8"
+  }
+}
