@@ -1,10 +1,24 @@
 ;((DHFT2017) => {
   function defEnum (obj, items) {
-    let offset = -1
-    while (obj[++offset]) {}
-    for (let i in items)
-      obj[(obj[offset+parseInt(i)] = items[i])] = offset+parseInt(i)
+    obj = obj || {}
+    const offset = obj.__offset__ || 0
+    let i = -1
+    while (items[++i])
+      obj[(obj[i + offset] = items[i])] = i + offset
+    obj.__offset__ = i + offset + 1
     return obj
   }
   DHFT2017.defEnum = defEnum
+  function defBynaryEnum(obj, items) {
+    obj = obj || {}
+    const offset = obj.__offset__ || 0
+    let i = -1
+    while (items[++i] && (i + offset < 32 || console.warn('BynaryEnum cannot have more than 32 items') )) {
+      obj[ (obj[1 << (i + offset)] = items[i]) ] = 1 << (i + offset)
+      obj[`__${items[i]}_i`] = i + offset
+    }
+    obj.__offset__ = i + offset + 1
+    return obj
+  }
+  DHFT2017.defBynaryEnum = defBynaryEnum
 })(window.DHFT2017 = window.DHFT2017 || {})

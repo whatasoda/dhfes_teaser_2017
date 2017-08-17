@@ -35,12 +35,12 @@
   Particle.setCurrent()
 
   const Camera = new DHFT2017.Perspective({
-    fovy: 130
+    fovy: 150
   })
   Camera.setCurrent()
   glmx.vec3.set(
     Camera.spherical.pivot,
-    0,0,100
+    0,0,200
   )
   DHFT2017.Camera.using.spherical.alpha = 180
 
