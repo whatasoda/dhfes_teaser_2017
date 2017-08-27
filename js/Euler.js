@@ -28,14 +28,14 @@
       this.s1          = 0
       this.s2          = 0
       this.s3          = 0
-      this._order          = option['order']      || this._order || EulerOrder.yxz
-      this._axisX          = this._axisX          || glmx.vec3.create()
-      this._axisY          = this._axisY          || glmx.vec3.create()
-      this._axisZ          = this._axisZ          || glmx.vec3.create()
-      this._axisXInvert    = this._axisXInvert    || glmx.vec3.create()
-      this._axisYInvert    = this._axisYInvert    || glmx.vec3.create()
-      this._axisZInvert    = this._axisZInvert    || glmx.vec3.create()
-      this._rotationMatrix = this._rotationMatrix || glmx.mat4.create()
+      this._order          = option.order           || EulerOrder.yxz
+      this._axisX          = option._axisX          || glmx.vec3.create()
+      this._axisY          = option._axisY          || glmx.vec3.create()
+      this._axisZ          = option._axisZ          || glmx.vec3.create()
+      this._axisXInvert    = option._axisXInvert    || glmx.vec3.create()
+      this._axisYInvert    = option._axisYInvert    || glmx.vec3.create()
+      this._axisZInvert    = option._axisZInvert    || glmx.vec3.create()
+      this._rotationMatrix = option._rotationMatrix || glmx.mat4.create()
     }
 
     fromPointer (pointer) {
@@ -281,13 +281,13 @@
     constructor (option = {}) {
       super(option)
       this._radius              = option.radius             || 1
-      this.pivot                = this.pivot                || glmx.vec3.create()
-      this._positionAxisX       = this._positionAxisX       || glmx.vec3.create()
-      this._positionAxisY       = this._positionAxisY       || glmx.vec3.create()
-      this._positionAxisZ       = this._positionAxisZ       || glmx.vec3.create()
-      this._positionAxisXInvert = this._positionAxisXInvert || glmx.vec3.create()
-      this._positionAxisYInvert = this._positionAxisYInvert || glmx.vec3.create()
-      this._positionAxisZInvert = this._positionAxisZInvert || glmx.vec3.create()
+      this.pivot                = option.pivot                || glmx.vec3.create()
+      this._positionAxisX       = option._positionAxisX       || glmx.vec3.create()
+      this._positionAxisY       = option._positionAxisY       || glmx.vec3.create()
+      this._positionAxisZ       = option._positionAxisZ       || glmx.vec3.create()
+      this._positionAxisXInvert = option._positionAxisXInvert || glmx.vec3.create()
+      this._positionAxisYInvert = option._positionAxisYInvert || glmx.vec3.create()
+      this._positionAxisZInvert = option._positionAxisZInvert || glmx.vec3.create()
     }
 
     fromPointer (pointer) {

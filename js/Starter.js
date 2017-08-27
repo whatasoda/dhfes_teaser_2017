@@ -16,6 +16,9 @@
       ) {
         DHFT2017.Particle.using.calc()
         DHFT2017.Camera.using.aspect = DHFT2017.RendererBase.using.canvas.width / DHFT2017.RendererBase.using.canvas.height
+        // DHFT2017.Camera.using.spherical.alpha += 0.3
+        // DHFT2017.Camera.using.spherical.beta += 0.3
+        // DHFT2017.Camera.using.spherical.gamma += 0.3
         DHFT2017.RendererBase.using.gl.viewport(0, 0, DHFT2017.RendererBase.using.canvas.width, DHFT2017.RendererBase.using.canvas.height)
         DHFT2017.RendererBase.using.render()
       }

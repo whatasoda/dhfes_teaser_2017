@@ -32,6 +32,9 @@
       {name:'particle.vert',    async: false,},
       {name:'particle.frag',    async: false,},
       {name:'ParticleShader',   async: false,},
+      {name:'line.vert',        async: false,},
+      {name:'line.frag',        async: false,},
+      {name:'LineShader',       async: false,},
       {name:'Particle',         async: false,},
       {name:'main',             async: false,},
     ])

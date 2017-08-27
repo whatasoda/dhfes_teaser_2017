@@ -1,9 +1,9 @@
 ;((DHFT2017) => {
 
-  class ParticleShader extends DHFT2017.ShaderBase {
+  class LineShader extends DHFT2017.ShaderBase {
     constructor (gl) {
       super(gl, {
-        particle: {vert: DHFT2017.particle.vert, frag: DHFT2017.particle.frag},
+        line: {vert: DHFT2017.line.vert, frag: DHFT2017.line.frag},
       })
     }
 
@@ -20,7 +20,7 @@
 
           // let modelMatrix = glmx.mat4.create() // dummy
           // glmx.mat4.multiply(mvpMatrix, vpMatrix, modelMatrix)
-          const main = this.shaders.particle
+          const main = this.shaders.line
           gl.useProgram(main.prog)
           // const canvasSize = glmx.vec2.fromValues(gl.canvas.width/2,gl.canvas.height/2)
           // const mag = glmx.vec3.distance(pivot, Camera.spherical.positionAxisZInvert)
@@ -33,9 +33,14 @@
             }
           }
           gl.uniformMatrix4fv(main.locs.unif.mvpMatrix, false, mvpMatrix)
-          gl.uniform3fv(main.locs.unif.cameraPosition, Camera.spherical.fromPointer(Camera.position))
 
-          gl.drawArrays(gl.POINTS, 0, Particle.pLength)
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Particle.indexBuffer)
+          let offset = 0
+          // gl.drawElements(gl.LINE_LOOP, Particle.lineCounts[6], gl.UNSIGNED_SHORT, 0)
+          for (let i=0; i<7; i++) {
+            gl.drawElements(gl.LINE_LOOP, Particle.lineCounts[i] - offset, gl.UNSIGNED_SHORT, offset * Uint16Array.BYTES_PER_ELEMENT)
+            offset = Particle.lineCounts[i]
+          }
         }
 
       } catch (e) {
@@ -44,6 +49,6 @@
     }
 
   }
-  DHFT2017.ParticleShader = ParticleShader
+  DHFT2017.LineShader = LineShader
 
 })(window.DHFT2017 = window.DHFT2017 || {})

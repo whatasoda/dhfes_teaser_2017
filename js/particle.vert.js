@@ -7,6 +7,7 @@ attribute   vec3  color;
 varying     float size;
 varying     vec4  pColor;
 varying     float pRand;
+varying     float veloMag;
 uniform     mat4  mvpMatrix;
 uniform     vec3  cameraPosition;
 
@@ -16,10 +17,11 @@ float rnd(vec2 p){
 
 void main (void) {
   pColor = vec4(color, 1.0);
+  veloMag = length(velocity);
   gl_Position = mvpMatrix * vec4(position, 1.0);
   pRand = rnd(gl_Position.xy / gl_Position.w);
   // gl_PointSize = 10.0;
-  gl_PointSize = max((1000.0 - length(position - cameraPosition)) / 1000.0, 0.0) * 50.0;
+  gl_PointSize = max((500.0 - length(position - cameraPosition)) / 500.0, 0.0) * 100.0;
   size = gl_PointSize;
 }
 

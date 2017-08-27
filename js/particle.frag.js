@@ -5,6 +5,7 @@ precision mediump float;
 varying     float size;
 varying     vec4  pColor;
 varying     float pRand;
+varying     float veloMag;
 
 float rnd(vec2 p){
     return fract(sin(dot(p ,vec2(12.9898,78.233))) * 43758.5453);
