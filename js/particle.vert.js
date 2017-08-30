@@ -20,7 +20,6 @@ void main (void) {
   veloMag = length(velocity);
   gl_Position = mvpMatrix * vec4(position, 1.0);
   pRand = rnd(gl_Position.xy / gl_Position.w);
-  // gl_PointSize = 10.0;
   gl_PointSize = max((500.0 - length(position - cameraPosition)) / 500.0, 0.0) * 100.0;
   size = gl_PointSize;
 }

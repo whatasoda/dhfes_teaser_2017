@@ -11,14 +11,14 @@
   const Renderer = new DHFT2017.RendererBase(width, height,
     [
       DHFT2017.ParticleShader,
-      DHFT2017.LineShader,
     ],
     {},
   )
   Renderer.setCurrent()
+  Renderer.clear()
   document.getElementsByClassName('p-header__wrapper')[0].append(Renderer.canvas)
 
-  const Particle = new DHFT2017.Particle(50, {
+  const Particle = new DHFT2017.Particle(32, {
     gLength    : [20, 30],
     gPositionX : [600, -300],
     gPositionY : [600, -300],

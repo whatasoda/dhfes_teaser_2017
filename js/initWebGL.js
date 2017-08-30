@@ -33,20 +33,24 @@
     render () {
       if (this.availability) {
         const gl = this.gl
-        let cc = this.clearColor
-        gl.clearColor(cc[0], cc[1], cc[2], cc[3])
-        gl.clearDepth(this.clearDepth)
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+        // this.clear()
 
         if (DHFT2017.Camera.using)
           DHFT2017.Camera.using.aspect = gl.canvas.width / gl.canvas.height
 
         for (const shader of this.shaders)
-          shader.render(gl)
+          shader.render(gl, this)
 
         gl.flush()
       } else
         console.warn("This renderer is not available.")
+    }
+
+    clear (color) {
+      const gl = this.gl
+      gl.clearColor(...(color || this.clearColor))
+      gl.clearDepth(this.clearDepth)
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     }
 
     get aspect() {
@@ -77,8 +81,11 @@
       this.shaders = {}
       for (let key in shaderTexts) {
         let compileResults = this.getProgram(gl, shaderTexts[key])
-        if (compileResults) this.shaders[key] = compileResults
-        else this.availability = false
+        if (compileResults) {
+          compileResults.name = [key]
+          this.shaders[key] = compileResults
+        } else
+          this.availability = false
       }
     }
 
@@ -93,6 +100,7 @@
           gl.linkProgram(prog)
           if ( gl.getProgramParameter(prog, gl.LINK_STATUS) ) {
             const attributes = {}
+            const strides = {}
             const uniforms = {}
             let tmpUniform, info,
               attrCount = 0,
@@ -100,13 +108,15 @@
             while ( (info = gl.getActiveAttrib(prog, attrCount++)) ) {
               console.log(info.name + ':' + info.type);
               attributes[info.name] = gl.getAttribLocation(prog, info.name)
+              strides[info.name] = this.getAttrStride(gl, info.type)
             }
             while ( (info = gl.getActiveUniform(prog, unifCount++)) )
               if ( (tmpUniform = gl.getUniformLocation(prog, info.name)) )
                 uniforms[info.name] = tmpUniform
             return {
               prog: prog, vert: vert, frag: frag,
-              locs: { attr: attributes, unif: uniforms, },
+              locs: { attr: attributes, unif: uniforms},
+              strides: strides,
             }
           } else
             console.warn( gl.getProgramInfoLog(prog) )
@@ -130,6 +140,35 @@
         }
         console.warn(`${type}: ${gl.getShaderInfoLog(shader)}`)
         return null
+      }
+    }
+
+    getAttrStride (gl, type) {
+      switch (type) {
+        case gl.BOOL:
+          return 1
+        case gl.FLOAT_VEC2:
+        case gl.INT_VEC2:
+        case gl.BOOL_VEC2:
+          return 2
+        case gl.FLOAT_VEC3:
+        case gl.INT_VEC3:
+        case gl.BOOL_VEC3:
+          return 3
+        case gl.FLOAT_VEC4:
+        case gl.INT_VEC4:
+        case gl.BOOL_VEC4:
+        case gl.FLOAT_MAT2:
+          return 4
+        case gl.FLOAT_MAT3:
+          return 9
+        case gl.FLOAT_MAT4:
+          return 16
+        case gl.SAMPLER_2D:
+        case gl.SAMPLER_CUBE:
+          return null
+        default:
+          return 0
       }
     }
 
