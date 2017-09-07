@@ -35,10 +35,13 @@
       {name:'line.frag',        async: false,},
       {name:'composite.vert',   async: false,},
       {name:'composite.frag',   async: false,},
-      {name:'fadeout.vert',   async: false,},
-      {name:'fadeout.frag',   async: false,},
+      {name:'fadeout.vert',     async: false,},
+      {name:'fadeout.frag',     async: false,},
+      {name:'SVGLine.vert',     async: false,},
+      {name:'SVGLine.frag',     async: false,},
       {name:'ParticleShader',   async: false,},
       {name:'Particle',         async: false,},
+      {name:'SVGConverter',     async: false,},
       {name:'main',             async: false,},
     ])
   }

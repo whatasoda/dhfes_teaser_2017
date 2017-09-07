@@ -1,5 +1,10 @@
 ;((DHFT2017) => {
+  const parseItemsStrPattern = /[^\s,]+/g
+  function parseItemsStr (str) {
+    return str.match(parseItemsStrPattern) || []
+  }
   function defEnum (obj, items) {
+    items = Array.isArray(items) ? items : parseItemsStr(items)
     obj = obj || {}
     const offset = obj.__offset__ || 0
     let i = -1
@@ -10,6 +15,7 @@
   }
   DHFT2017.defEnum = defEnum
   function defBynaryEnum(obj, items) {
+    items = Array.isArray(items) ? items : parseItemsStr(items)
     obj = obj || {}
     const offset = obj.__offset__ || 0
     let i = -1

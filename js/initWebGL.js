@@ -100,23 +100,23 @@
           gl.linkProgram(prog)
           if ( gl.getProgramParameter(prog, gl.LINK_STATUS) ) {
             const attributes = {}
-            const strides = {}
             const uniforms = {}
-            let tmpUniform, info,
+            let info,
               attrCount = 0,
               unifCount = 0
             while ( (info = gl.getActiveAttrib(prog, attrCount++)) ) {
-              console.log(info.name + ':' + info.type);
-              attributes[info.name] = gl.getAttribLocation(prog, info.name)
-              strides[info.name] = this.getAttrStride(gl, info.type)
+              attributes[info.name] = {}
+              attributes[info.name].location = gl.getAttribLocation(prog, info.name)
+              attributes[info.name].size     = this.getAttrSize(gl, info.type)
             }
-            while ( (info = gl.getActiveUniform(prog, unifCount++)) )
-              if ( (tmpUniform = gl.getUniformLocation(prog, info.name)) )
-                uniforms[info.name] = tmpUniform
+            while ( (info = gl.getActiveUniform(prog, unifCount++)) ) {
+              uniforms[info.name] = {}
+              uniforms[info.name].location = gl.getUniformLocation(prog, info.name)
+            }
             return {
               prog: prog, vert: vert, frag: frag,
-              locs: { attr: attributes, unif: uniforms},
-              strides: strides,
+              attr: attributes,
+              unif: uniforms,
             }
           } else
             console.warn( gl.getProgramInfoLog(prog) )
@@ -143,27 +143,27 @@
       }
     }
 
-    getAttrStride (gl, type) {
+    getAttrSize (gl, type) {
       switch (type) {
         case gl.BOOL:
+        case gl.FLOAT:
+        case gl.INT:
           return 1
         case gl.FLOAT_VEC2:
         case gl.INT_VEC2:
         case gl.BOOL_VEC2:
+        case gl.FLOAT_MAT2:
           return 2
         case gl.FLOAT_VEC3:
         case gl.INT_VEC3:
         case gl.BOOL_VEC3:
+        case gl.FLOAT_MAT3:
           return 3
         case gl.FLOAT_VEC4:
         case gl.INT_VEC4:
         case gl.BOOL_VEC4:
-        case gl.FLOAT_MAT2:
-          return 4
-        case gl.FLOAT_MAT3:
-          return 9
         case gl.FLOAT_MAT4:
-          return 16
+          return 4
         case gl.SAMPLER_2D:
         case gl.SAMPLER_CUBE:
           return null

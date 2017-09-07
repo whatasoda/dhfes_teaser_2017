@@ -48,12 +48,15 @@
   })
   Camera.setCurrent()
 
+  const svg = new DHFT2017.SVGConverter(document.getElementsByTagName('path')[0])
+  DHFT2017.SVGConverter.using = svg
+  console.log(svg);
+  console.log(svg.svgline.length);
+  console.log(svg.getPoint(0,0, false, false));
   let i = 0
   // while (i++ < 25)
     DHFT2017.Particle.using.calc()
   DHFT2017.Starter.animate()
-
-  console.log(Particle.lineOrder);
 
   console.log(Renderer.shaders[0]);
 })(window.DHFT2017 = window.DHFT2017 || {})

@@ -119,10 +119,10 @@
         )
         tmpLineOrder.push( 0,1,2, )
       }
-      this.params = {}
-      this.params.position  = new Float32Array(tmpPosition)
-      this.params.velocity  = new Float32Array(tmpVelocity)
-      this.params.color     = new Float32Array(tmpColor)
+      this.attrData = {}
+      this.attrData.position  = new Float32Array(tmpPosition)
+      this.attrData.velocity  = new Float32Array(tmpVelocity)
+      this.attrData.color     = new Float32Array(tmpColor)
 
       this.lineOrder        = new Uint16Array(tmpLineOrder)
       this.lineCounts       = new Uint16Array([0,1,2,3,4,5,6])
@@ -134,13 +134,13 @@
         this.pointerBase[i] = i
 
 
-      this.buffers = {}
+      this.attrBuf = {}
       let tmpBuffer
-      for (const bufferName in this.params) {
+      for (const bufferName in this.attrData) {
         if ( (tmpBuffer = gl.createBuffer()) ) {
-          this.buffers[bufferName] = tmpBuffer
-          gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers[bufferName])
-          gl.bufferData(gl.ARRAY_BUFFER, this.params[bufferName], gl.DYNAMIC_DRAW)
+          this.attrBuf[bufferName] = tmpBuffer
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.attrBuf[bufferName])
+          gl.bufferData(gl.ARRAY_BUFFER, this.attrData[bufferName], gl.DYNAMIC_DRAW)
           gl.bindBuffer(gl.ARRAY_BUFFER, null)
         }
       }
@@ -221,21 +221,21 @@
       while (++n < this.pLength) {
         glmx.vec3.set(tmp.acceleration, 0, 0, 0)
         glmx.vec3.set(tmp.position,
-          this.params.position[n*3 + 0],
-          this.params.position[n*3 + 1],
-          this.params.position[n*3 + 2]
+          this.attrData.position[n*3 + 0],
+          this.attrData.position[n*3 + 1],
+          this.attrData.position[n*3 + 2]
         )
         glmx.vec3.set(tmp.outPosition, 0, 0, 0)
         glmx.vec3.set(tmp.velocity,
-          this.params.velocity[n*3 + 0],
-          this.params.velocity[n*3 + 1],
-          this.params.velocity[n*3 + 2]
+          this.attrData.velocity[n*3 + 0],
+          this.attrData.velocity[n*3 + 1],
+          this.attrData.velocity[n*3 + 2]
         )
         glmx.vec3.set(tmp.outVelocity, 0, 0, 0)
         glmx.vec3.set(tmp.color,
-          this.params.color[n*3 + 0],
-          this.params.color[n*3 + 1],
-          this.params.color[n*3 + 2]
+          this.attrData.color[n*3 + 0],
+          this.attrData.color[n*3 + 1],
+          this.attrData.color[n*3 + 2]
         )
 
         veloMag = glmx.vec3.length(tmp.velocity)
@@ -276,22 +276,22 @@
         glmx.vec3.add(tmp.outPosition, tmp.position, tmp.outVelocity)
 
         for (i=0; i<3; i++) {
-          this.params.position[n*3+i] = tmp.outPosition[i]
-          this.params.velocity[n*3+i] = tmp.outVelocity[i]
+          this.attrData.position[n*3+i] = tmp.outPosition[i]
+          this.attrData.velocity[n*3+i] = tmp.outVelocity[i]
         }
 
       } // while END
 
-      for (const bufferName in this.buffers) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers[bufferName])
-        gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.params[bufferName])
+      for (const bufferName in this.attrBuf) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.attrBuf[bufferName])
+        gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.attrData[bufferName])
       }
 
 
-      if (this.params.position.toString().match('NaN')) {
+      if (this.attrData.position.toString().match('NaN')) {
         console.warn('NaN が出た');
       }
-      if (this.params.position.indexOf(Infinity) != -1) {
+      if (this.attrData.position.indexOf(Infinity) != -1) {
         console.warn('Infinity が出た');
       }
     }
