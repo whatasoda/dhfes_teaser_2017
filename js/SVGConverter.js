@@ -12,34 +12,36 @@
 
   class BezierPath {
     constructor (x,y,z) {
-      this.coord = []
-      this.vCoord = []
+      this.cvCoord = [] // Control Vertex
+      this.coCoord = [] // Coefficient
       for (const arg of arguments)
         if (isNaN(arg))
           return null
-        else this.coord.push([arg])
+        else this.cvCoord.push([arg])
       this.demension = arguments.length
       this.elemCount = 0
     }
 
-    get x () { return this.coord[0] }
-    get y () { return this.coord[1] }
-    get z () { return this.coord[2] }
-    get cpx () { return this.coord[0][this.coord[0].length-1] || 0 } // Current Position X
-    get cpy () { return this.coord[1][this.coord[1].length-1] || 0 } // Current Position Y
-    get cpz () { return this.coord[2][this.coord[2].length-1] || 0 } // Current Position Z
-    get pcx () { return this.coord[0][this.coord[0].length-2] || this.cpx } // Previous Controlpoint X
-    get pcy () { return this.coord[1][this.coord[1].length-2] || this.cpy } // Previous Controlpoint Y
-    get pcz () { return this.coord[2][this.coord[2].length-2] || this.cpz } // Previous Controlpoint Z
+    get x () { return this.cvCoord[0] }
+    get y () { return this.cvCoord[1] }
+    get z () { return this.cvCoord[2] }
+    get cpx () { return this.cvCoord[0][this.cvCoord[0].length-1] || 0 } // Current Position X
+    get cpy () { return this.cvCoord[1][this.cvCoord[1].length-1] || 0 } // Current Position Y
+    get cpz () { return this.cvCoord[2][this.cvCoord[2].length-1] || 0 } // Current Position Z
+    get pcx () { return this.cvCoord[0][this.cvCoord[0].length-2] || this.cpx } // Previous Controlpoint X
+    get pcy () { return this.cvCoord[1][this.cvCoord[1].length-2] || this.cpy } // Previous Controlpoint Y
+    get pcz () { return this.cvCoord[2][this.cvCoord[2].length-2] || this.cpz } // Previous Controlpoint Z
 
     changeCPtoCoefficient () {
       if (!this.elemCount || this.changed)
         return null
-      const C = this.coord
-      const tmpC = []
+      const CV = this.cvCoord
+      const tmpCo = []
       const tmpS = []
-      for (let d=0; d<this.demension; d++)
-        tmpC.push([])
+      for (let d=0; d<this.demension; d++) {
+        this.cvCoord[d] = new Float32Array(this.cvCoord[d])
+        tmpCo.push([])
+      }
       let p0, p1, p2, p3
       let Ap, Bp, Cp
       let As, Bs, Cs, Ds, Es
@@ -48,8 +50,8 @@
         i3 = 3 * i
         i4 = 4 * i
         for (let d=0; d<this.demension; d++) {
-          ;[p0, p1, p2, p3] = [C[d][i3], C[d][i3+1], C[d][i3+2], C[d][i3+3]]
-          tmpC[d].push(
+          ;[p0, p1, p2, p3] = [CV[d][i3], CV[d][i3+1], CV[d][i3+2], CV[d][i3+3]]
+          tmpCo[d].push(
               -p0 + 3*p1 - 3*p2 + p3,
              3*p0 - 6*p1 + 3*p2,
             -3*p0 + 3*p1,
@@ -58,7 +60,7 @@
         }
         ;[As, Bs, Cs, Ds, Es] = [0,0,0,0,0]
         for (let d=0; d<this.demension; d++) {
-          ;[Ap, Bp, Cp] = [tmpC[d][i4], tmpC[d][i4+1], tmpC[d][i4+2]]
+          ;[Ap, Bp, Cp] = [tmpCo[d][i4], tmpCo[d][i4+1], tmpCo[d][i4+2]]
           As += 9  * Math.pow(Ap, 2)
           Bs += 12 * Ap * Bp
           Cs += 6  * Ap * Cp + 4 * Math.pow(Bp, 2)
@@ -68,7 +70,7 @@
         tmpS.push(As, Bs, Cs, Ds, Es)
       }
       for (let d=0; d<this.demension; d++)
-        this.coord[d] = new Float32Array(tmpC[d])
+        this.coCoord[d] = new Float32Array(tmpCo[d])
       this.speed = new Float32Array(tmpS)
       this.maxParam = this.elemCount * maxParamMag
       this.changed = true
@@ -82,10 +84,10 @@
         out[n] = 0
       if (valuePointer & bezierValuePointer.position ) for (let d=0; d<this.demension; d++)
         for ( (i=0) || vi++; i<4; i++)
-          out[vi] += this.coord[d][id4 + i] * T[3-i]
+          out[vi] += this.coCoord[d][id4 + i] * T[3-i]
       if (valuePointer & bezierValuePointer.velocity ) for (let d=0; d<this.demension; d++)
         for ( (i=0) || vi++; i<3; i++)
-          out[vi] += this.coord[id4 + i] * T[2-i] * (3-i)
+          out[vi] += this.coCoord[id4 + i] * T[2-i] * (3-i)
       if (valuePointer & bezierValuePointer.speed) {
         for ( (i=0) || vi++; i<5; i++)
           out[vi] += this.speed[id5 + i] * T[4-i]
@@ -124,7 +126,7 @@
       this.convert(elm.getAttribute('d').match( SVGConverter.patterns.commands ))
 
       const gl = DHFT2017.RendererBase.using.gl
-      const result = this.getArrays(BVP.position, true, 0.01, true)
+      const result = this.getArrays(BVP.position, false, 5000, true)
       const arrays = result.arrays
       this.svgline = this.svgline || arrays[0]
       this.counts = result.counts
@@ -323,7 +325,7 @@
       let [v, vC, vPointer] = [0, 0, pointer &  (BVP.position | BVP.velocity)]
       let [s, sC, sPointer] = [2, 0, pointer & ~(BVP.position | BVP.velocity)]
       while ( vPointer >>> v ) if ( (vPointer >>> v++) & 1 && ++vC)
-        arrays.push([])
+        arrays.push([],[])
       while ( sPointer >>> s ) if ( (sPointer >>> s++) & 1 && ++sC)
         arrays.push([])
       const out = new Float32Array(arrays.length)
@@ -336,6 +338,9 @@
       let shiftStep = 0
       let param = 0
       let n
+
+      const test = new Float32Array(8)
+      const csv = []
       while (i < this.bezier.length) {
         if (B[i].elemCount <= param)
           param = shiftStep === 0 &&  (shiftStep = 1)        ? B[i].elemCount
@@ -343,6 +348,17 @@
         if ( !this.getAbsParam(i, param, false) )
           break
         B[i].getValues(pointer, AP[0], AP[1], out)
+
+        const id3 = AP[0]*3
+        for (let m=0; m<4; m++) {
+          test[m] = Math.pow(B[i].cvCoord[0][id3+m] - out[0], 2) + Math.pow(B[i].cvCoord[1][id3+m] - out[1], 2)
+        }
+        test[4] = test[0] - test[2]
+        test[5] = test[3] - test[1]
+        test[6] = test[5] + test[4]
+        test[7] = test[5] - test[4]
+        csv.push(test.join(','))
+        // console.log(test);
 
         param += mode
           ? Math.min(1, Math.max(out[vC] ? range / (out[vC] * VB.divLength) : 1, 0.00001))
@@ -362,6 +378,7 @@
       }
       for (i=0; i<arrays.length; i++)
         arrays[i] = new Float32Array(arrays[i])
+      console.log(csv.join('\n'));
       return {counts: pathElemCounts, arrays: arrays}
     }
 

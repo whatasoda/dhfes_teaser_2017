@@ -7,6 +7,7 @@
         line: {vert: DHFT2017.line.vert, frag: DHFT2017.line.frag},
         composite: {vert: DHFT2017.composite.vert, frag: DHFT2017.composite.frag},
         SVGLine: {vert: DHFT2017.SVGLine.vert, frag: DHFT2017.SVGLine.frag},
+        lineBold: {vert: DHFT2017.lineBold.vert, frag: DHFT2017.lineBold.frag},
         fadeout: {vert: DHFT2017.fadeout.vert, frag: DHFT2017.fadeout.frag},
       })
       this.gl = gl
@@ -29,6 +30,7 @@
         this.shaders.particle,
         this.shaders.line,
         this.shaders.composite,
+        this.shaders.SVGLine,
       ])
 
       this.board = gl.createBuffer()
@@ -54,6 +56,7 @@
         const line = this.shaders.line
         const comp = this.shaders.composite
         const SVGLine = this.shaders.SVGLine
+        const lineBold = this.shaders.lineBold
 
         gl.bindFramebuffer(gl.FRAMEBUFFER, line.fBuf)
         this.fadeout(0.01)
@@ -127,18 +130,34 @@
         Renderer.clear()
         gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0)
 
-        const svg = DHFT2017.SVGConverter.using
-        gl.useProgram(SVGLine.prog)
-        gl.bindBuffer(gl.ARRAY_BUFFER, svg.lineBuffer)
-        gl.enableVertexAttribArray(SVGLine.attr.position.location)
-        gl.vertexAttribPointer(SVGLine.attr.position.location, SVGLine.attr.position.size, gl.FLOAT, false, 0, 0)
-        gl.bindBuffer(gl.ARRAY_BUFFER, svg.colorBuffer)
-        gl.enableVertexAttribArray(SVGLine.attr.color.location)
-        gl.vertexAttribPointer(SVGLine.attr.color.location, SVGLine.attr.color.size, gl.FLOAT, false, 0, 0)
-        gl.uniform1f(SVGLine.unif.aspect.location, gl.canvas.width / gl.canvas.height)
-        const counts = svg.counts
-        for (let i=0; i<counts.length; i++)
-          gl.drawArrays(gl.LINE_STRIP, i && counts[i-1]+1, counts[i] - (i && counts[i-1]))
+
+        // gl.bindFramebuffer(gl.FRAMEBUFFER, SVGLine.fBuf)
+        // Renderer.clear()
+        // const svg = DHFT2017.SVGConverter.using
+        // gl.useProgram(SVGLine.prog)
+        // gl.bindBuffer(gl.ARRAY_BUFFER, svg.lineBuffer)
+        // gl.enableVertexAttribArray(SVGLine.attr.position.location)
+        // gl.vertexAttribPointer(SVGLine.attr.position.location, SVGLine.attr.position.size, gl.FLOAT, false, 0, 0)
+        // gl.bindBuffer(gl.ARRAY_BUFFER, svg.colorBuffer)
+        // gl.enableVertexAttribArray(SVGLine.attr.color.location)
+        // gl.vertexAttribPointer(SVGLine.attr.color.location, SVGLine.attr.color.size, gl.FLOAT, false, 0, 0)
+        // gl.uniform1f(SVGLine.unif.aspect.location, gl.canvas.width / gl.canvas.height)
+        // const counts = svg.counts
+        // for (let i=0; i<counts.length; i++)
+        //   gl.drawArrays(gl.LINE_STRIP, i && counts[i-1]+1, counts[i] - (i && counts[i-1]))
+        // gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+
+        // gl.useProgram(lineBold.prog)
+        // gl.bindBuffer(gl.ARRAY_BUFFER, this.board)
+        // gl.enableVertexAttribArray(lineBold.attr.position.location)
+        // gl.vertexAttribPointer(lineBold.attr.position.location, lineBold.attr.position.size, gl.FLOAT, false, 0, 0)
+        //
+        // gl.activeTexture(gl.TEXTURE0)
+        // gl.bindTexture(gl.TEXTURE_2D, SVGLine.fTex)
+        // gl.uniform1i(lineBold.unif.svgline.location, 0)
+        // gl.uniform1f(lineBold.unif.width.location, 12)
+
+        // gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0)
       }
     }
 
