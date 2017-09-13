@@ -12,11 +12,12 @@
     [
       DHFT2017.ParticleShader,
     ],
-    {},
+    {
+      container: document.getElementsByClassName('p-header__wrapper')[0]
+    },
   )
   Renderer.setCurrent()
   Renderer.clear()
-  document.getElementsByClassName('p-header__wrapper')[0].append(Renderer.canvas)
 
   const Particle = new DHFT2017.Particle(32, {
     gLength    : [20, 30],
@@ -33,7 +34,7 @@
     pVelocityX : [5, -2.5],
     pVelocityY : [5, -2.5],
     pVelocityZ : [5, -2.5],
-    refreshSpan: [200, 500],
+    refreshSpan: [200, 800],
   })
   Particle.setCurrent()
 
@@ -48,15 +49,8 @@
   })
   Camera.setCurrent()
 
-  const svg = new DHFT2017.SVGConverter(document.getElementsByTagName('path')[0])
-  DHFT2017.SVGConverter.using = svg
-  console.log(svg);
-  console.log(svg.svgline.length);
-  console.log(svg.getPoint(0,0, false, false));
   let i = 0
   // while (i++ < 25)
     DHFT2017.Particle.using.calc()
   DHFT2017.Starter.animate()
-
-  console.log(Renderer.shaders[0]);
 })(window.DHFT2017 = window.DHFT2017 || {})

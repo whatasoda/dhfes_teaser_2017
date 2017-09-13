@@ -5,12 +5,14 @@
     constructor (width, height, shaders, option = {}) {
       this.availability = true
       this.canvas = document.createElement("canvas")
+      if (option.container instanceof Element)
+        option.container.append(this.canvas)
       this.width = width
       this.height = height
       this.shaders = []
       this.clearDepth = option.clearDepth || 1
       this.clearColor = option.clearColor || glmx.vec4.fromValues(0,0,0,1)
-      const gl = this.canvas.getContext('webgl2', {antialias: true}) || this.canvas.getContext('experimental-webgl2')
+      const gl = this.canvas.getContext('webgl', {antialias: true}) || this.canvas.getContext('experimental-webgl')
       this.gl = gl
       for (const shader of shaders) {
         let shaderTmp = new shader(gl)
@@ -79,47 +81,55 @@
     constructor (gl, shaderTexts = {}) {
       this.availability = true
       this.shaders = {}
-      for (let key in shaderTexts) {
-        let compileResults = this.getProgram(gl, shaderTexts[key])
+      for (const name in shaderTexts) {
+        const compileResults = this.getProgram(gl, shaderTexts[name], name)
         if (compileResults) {
-          compileResults.name = [key]
-          this.shaders[key] = compileResults
+          compileResults.name = name
+          this.shaders[name] = compileResults
         } else
           this.availability = false
       }
     }
 
-    getProgram (gl, shaderText) {
-      if (shaderText.vert && shaderText.frag) {
-        let vert = this.getShader(gl, shaderText.vert, gl.VERTEX_SHADER)
-        let frag = this.getShader(gl, shaderText.frag, gl.FRAGMENT_SHADER)
-        let prog = gl.createProgram()
+    getProgram (gl, shaderText, name) {
+      if (typeof shaderText.vert === 'string' && typeof shaderText.frag === 'string') {
+        const vert = this.getShader(gl, shaderText.vert, gl.VERTEX_SHADER)
+        const frag = this.getShader(gl, shaderText.frag, gl.FRAGMENT_SHADER)
+        const prog = gl.createProgram()
         if (frag && vert && prog) {
           gl.attachShader(prog, vert)
           gl.attachShader(prog, frag)
           gl.linkProgram(prog)
           if ( gl.getProgramParameter(prog, gl.LINK_STATUS) ) {
+            let tmpMatch
+            const attrLength = ( tmpMatch = shaderText.vert.match(ShaderBase.Patterns.attribute) ) && tmpMatch.length
+            const unifLength = (( tmpMatch = shaderText.vert.match(ShaderBase.Patterns.uniform)  ) && tmpMatch.length) +
+                               (( tmpMatch = shaderText.frag.match(ShaderBase.Patterns.uniform)  ) && tmpMatch.length)
             const attributes = {}
             const uniforms = {}
             let info,
               attrCount = 0,
               unifCount = 0
-            while ( (info = gl.getActiveAttrib(prog, attrCount++)) ) {
+            while ( attrCount < attrLength && (info = gl.getActiveAttrib(prog, attrCount++)) ) {
               attributes[info.name] = {}
               attributes[info.name].location = gl.getAttribLocation(prog, info.name)
               attributes[info.name].size     = this.getAttrSize(gl, info.type)
             }
-            while ( (info = gl.getActiveUniform(prog, unifCount++)) ) {
+            if (gl.getError() === gl.INVALID_VALUE)
+              console.warn(`${name}: GL_INVALID_VALUE: glGetActiveAttrib`);
+            while ( unifCount < unifLength && (info = gl.getActiveUniform(prog, unifCount++)) ) {
               uniforms[info.name] = {}
               uniforms[info.name].location = gl.getUniformLocation(prog, info.name)
             }
+            if (gl.getError() === gl.INVALID_VALUE)
+              console.warn(`${name}: GL_INVALID_VALUE: glGetActiveUniform`);
             return {
               prog: prog, vert: vert, frag: frag,
               attr: attributes,
               unif: uniforms,
             }
           } else
-            console.warn( gl.getProgramInfoLog(prog) )
+            console.warn( name + ' ' + gl.getProgramInfoLog(prog) )
         }
       }
       console.warn("This shader is not available.")
@@ -176,8 +186,10 @@
     }
 
   }
+  ShaderBase.Patterns = {}
+  ShaderBase.Patterns.attribute = /\s*attribute\s/g
+  ShaderBase.Patterns.uniform   = /\s*uniform\s/g
   DHFT2017.ShaderBase = ShaderBase
-
 
 
 

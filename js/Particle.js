@@ -205,7 +205,6 @@
       const gl = this.gl
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
       gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, 0, this.lineOrder)
-      console.log(this.lineCounts);
     }
 
     calc () {

@@ -1,16 +1,16 @@
 ;((DHFT2017) => {
-  DHFT2017.EulerPointer = DHFT2017.defEnum(DHFT2017.EulerPointer || {}, [
-    'axisX'              , 'axisY'              , 'axisZ'              ,
-    'axisXInvert'        , 'axisYInvert'        , 'axisZInvert'        ,
-    'positionAxisX'      , 'positionAxisY'      , 'positionAxisZ'      ,
-    'positionAxisXInvert', 'positionAxisYInvert', 'positionAxisZInvert',
-    'pivot',
-  ])
+  DHFT2017.EulerPointer = DHFT2017.defEnum(DHFT2017.EulerPointer || {}, `
+    axisX              , axisY              , axisZ              ,
+    axisXInvert        , axisYInvert        , axisZInvert        ,
+    positionAxisX      , positionAxisY      , positionAxisZ      ,
+    positionAxisXInvert, positionAxisYInvert, positionAxisZInvert,
+    pivot
+  `)
   const EulerPointer = DHFT2017.EulerPointer
 
-  DHFT2017.EulerOrder = DHFT2017.defEnum(DHFT2017.EulerOrder || {}, [
-    'xzy', 'xyz', 'yxz', 'yzx', 'zyx', 'zxy'
-  ])
+  DHFT2017.EulerOrder = DHFT2017.defEnum(DHFT2017.EulerOrder || {}, `
+    xzy, xyz, yxz, yzx, zyx, zxy
+  `)
   const EulerOrder = DHFT2017.EulerOrder
 
 
