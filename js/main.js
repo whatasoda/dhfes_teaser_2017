@@ -19,21 +19,12 @@
   Renderer.setCurrent()
   Renderer.clear()
 
-  const Particle = new DHFT2017.Particle(32, {
-    gLength    : [20, 30],
-    gPositionX : [600, -300],
-    gPositionY : [600, -300],
-    gPositionZ : [600, -300],
-    gMag       : [70, 30],
-    gFarLimit  : [100, 100],
-    gNearLimit : [30, 30],
-    gRotWeight : [1/4, 1/8],
-    pPositionX : [20, -10],
-    pPositionY : [20, -10],
-    pPositionZ : [-20, 0],
-    pVelocityX : [5, -2.5],
-    pVelocityY : [5, -2.5],
-    pVelocityZ : [5, -2.5],
+  DHFT2017.enableAnimate = false
+  DHFT2017.enableAnimate = true
+  const Particle = new DHFT2017.Particle(15, {
+    gLength    : [0, 1],
+    pDensity   : [0, 30],
+    cNoise     : [0.5, -0.25],
     refreshSpan: [200, 800],
   })
   Particle.setCurrent()
@@ -43,6 +34,7 @@
     spherical: new DHFT2017.Spherical({
       // pivot: glmx.vec3.fromValues(0, 0, 200),
       radius: 300,
+      gamma: 40,
     }),
     far: 1000,
     fovy: 120

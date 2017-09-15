@@ -22,6 +22,7 @@
         }
     })([
       {name:'gl-matrix-min',    async: false,},
+      {name:'color.json',       async: false,},
       {name:'optimiseGLMatrix', async: false,},
       {name:'MathExtend',       async: false,},
       {name:'Util',             async: false,},
