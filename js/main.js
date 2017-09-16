@@ -6,7 +6,7 @@
   console.log(`Using Seed Value: [u: ${originalRandom.u}, v: ${originalRandom.v}, sequence: ${originalRandom.x}-${originalRandom.y}-${originalRandom.z} ]`)
   DHFT2017.originalRandom = originalRandom
 
-  let width = 1200
+  let width = 700
   let height = 700
   const Renderer = new DHFT2017.RendererBase(width, height,
     [
@@ -21,23 +21,18 @@
 
   DHFT2017.enableAnimate = false
   DHFT2017.enableAnimate = true
-  const Particle = new DHFT2017.Particle(15, {
+  const Particle = new DHFT2017.Particle(30, {
     gLength    : [0, 1],
-    pDensity   : [0, 30],
-    cNoise     : [0.5, -0.25],
-    refreshSpan: [200, 800],
+    pDensity   : [0, 70],
   })
   Particle.setCurrent()
 
 
   const Camera = new DHFT2017.Perspective({
     spherical: new DHFT2017.Spherical({
-      // pivot: glmx.vec3.fromValues(0, 0, 200),
       radius: 300,
-      gamma: 40,
     }),
     far: 1000,
-    fovy: 120
   })
   Camera.setCurrent()
 

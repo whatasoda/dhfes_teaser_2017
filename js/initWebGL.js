@@ -12,7 +12,7 @@
       this.shaders = []
       this.clearDepth = option.clearDepth || 1
       this.clearColor = option.clearColor || glmx.vec4.fromValues(0,0,0,1)
-      const gl = this.canvas.getContext('webgl', {antialias: true}) || this.canvas.getContext('experimental-webgl')
+      const gl = this.canvas.getContext('webgl', {antialias: true}) || this.canvas.getContext('experimental-webgl', {antialias: true})
       this.gl = gl
       for (const shader of shaders) {
         let shaderTmp = new shader(gl)
@@ -21,10 +21,7 @@
       }
       // gl.enable(gl.CULL_FACE)
       // gl.depthFunc(gl.LEQUAL);
-      gl.enable(gl.BLEND);
-      // gl.enable(gl.DEPTH_TEST)
       // gl.blendEquation(gl.FUNC_ADD)
-      gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
       // gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
     }
 
@@ -35,10 +32,12 @@
     render () {
       if (this.availability) {
         const gl = this.gl
-        // this.clear()
 
+        gl.viewport(0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight)
+        gl.canvas.width  = gl.canvas.clientWidth
+        gl.canvas.height = gl.canvas.clientHeight
         if (DHFT2017.Camera.using)
-          DHFT2017.Camera.using.aspect = gl.canvas.width / gl.canvas.height
+          DHFT2017.Camera.using.aspect = gl.canvas.clientWidth / gl.canvas.clientHeight
 
         for (const shader of this.shaders)
           shader.render(gl, this)
@@ -111,15 +110,17 @@
               attrCount = 0,
               unifCount = 0
             while ( attrCount < attrLength && (info = gl.getActiveAttrib(prog, attrCount++)) ) {
-              attributes[info.name] = {}
-              attributes[info.name].location = gl.getAttribLocation(prog, info.name)
-              attributes[info.name].size     = this.getAttrSize(gl, info.type)
+              const name = info.name.replace(/\[0\]/, '')
+              attributes[name] = {}
+              attributes[name].location = gl.getAttribLocation(prog, info.name)
+              attributes[name].size     = this.getAttrSize(gl, info.type)
             }
             if (gl.getError() === gl.INVALID_VALUE)
               console.warn(`${name}: GL_INVALID_VALUE: glGetActiveAttrib`);
             while ( unifCount < unifLength && (info = gl.getActiveUniform(prog, unifCount++)) ) {
-              uniforms[info.name] = {}
-              uniforms[info.name].location = gl.getUniformLocation(prog, info.name)
+              const name = info.name.replace(/\[0\]/, '')
+              uniforms[name] = {}
+              uniforms[name].location = gl.getUniformLocation(prog, info.name)
             }
             if (gl.getError() === gl.INVALID_VALUE)
               console.warn(`${name}: GL_INVALID_VALUE: glGetActiveUniform`);

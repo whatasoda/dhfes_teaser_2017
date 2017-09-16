@@ -8,8 +8,6 @@
       super(gl, {
         particle: {vert: DHFT2017.particle.vert, frag: DHFT2017.particle.frag},
         line: {vert: DHFT2017.line.vert, frag: DHFT2017.line.frag},
-        composite: {vert: DHFT2017.composite.vert, frag: DHFT2017.composite.frag},
-        fadeout: {vert: DHFT2017.fadeout.vert, frag: DHFT2017.fadeout.frag},
       })
       this.gl = gl
       ;((outs) => {
@@ -30,7 +28,6 @@
       })([
         this.shaders.particle,
         this.shaders.line,
-        this.shaders.composite,
       ])
 
       this.board = gl.createBuffer()
@@ -44,7 +41,11 @@
 
       this.noiseSpanContainer  = new Float32Array(5)
       this.blendParamContainer = new Uint16Array(4)
-      gl.enable(gl.DEPTH_TEST)
+
+
+      gl.enable(gl.BLEND);
+      // gl.blendFuncSeparate(gl.SRC_ALPHA, gl.DST_ALPHA, gl.ONE, gl.ONE);
+      gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
 
     }
 
@@ -56,64 +57,28 @@
         const mvpMatrix = Camera.vpMatrix
         const part = this.shaders.particle
         const line = this.shaders.line
-        const comp = this.shaders.composite
-        const SVGLine = this.shaders.SVGLine
-        const lineBold = this.shaders.lineBold
 
-        // clear phase
-        // gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-        Renderer.clear()
-        // gl.bindFramebuffer(gl.FRAMEBUFFER, part.fBuf)
-        // Renderer.clear()
-        // this.fadeout(0.05)
-        // gl.bindFramebuffer(gl.FRAMEBUFFER, line.fBuf)
-        // Renderer.clear()
-        // this.fadeout(0.05)
-        // end clear phase
-
+        Renderer.clear(Particle.clearColor)
         // particle
         gl.useProgram(part.prog)
         this.assignAttribBuffer(Particle, part)
         gl.uniformMatrix4fv(part.unif.mvpMatrix.location, false, mvpMatrix)
         gl.uniform3fv(part.unif.cameraPosition.location, Camera.spherical.fromPointer(Camera.position))
-        gl.uniform1f(part.unif.sizeMag.location, 50)
-        // for (let f=0; f<2; f++) {
-          // gl.bindFramebuffer(gl.FRAMEBUFFER, !f ? part.fBuf : null)
-          gl.drawArrays(gl.POINTS, 0, Particle.pLength)
-        // }
+        gl.uniform1f(part.unif.sizeMag.location, 0.8)
+        gl.uniform1f(part.unif.alpha.location, 0.95)
+        const sizeRange = 1200
+        gl.uniform1f(part.unif.sizeRange.location, sizeRange)
+        gl.uniform1f(part.unif.divSizeRange.location, 1 / sizeRange)
+        gl.uniform3fv(part.unif.colorSet.location, Particle.colorSet)
+        gl.drawArrays(gl.POINTS, 0, Particle.pLength)
         // end particle
         // line
-        gl.useProgram(line.prog)
-        gl.uniformMatrix4fv(line.unif.mvpMatrix.location, false, mvpMatrix)
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Particle.indexBuffer)
+        // gl.useProgram(line.prog)
+        // gl.uniformMatrix4fv(line.unif.mvpMatrix.location, false, mvpMatrix)
+        // gl.uniform3fv(line.unif['colorSet[0]'].location, Particle.colorSet)
+        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Particle.indexBuffer)
         // gl.drawElements(gl.LINE_STRIP, Particle.pLength - 1, gl.UNSIGNED_SHORT, 0)
-        // for (let f=0; f<2; f++) {
-          // gl.bindFramebuffer(gl.FRAMEBUFFER, !f ? line.fBuf : null)
-          // let offset = 0
-          // for (let i=0; i<7; i++) {
-          //   gl.drawElements(gl.LINE_LOOP, Particle.lineCounts[i] - offset, gl.UNSIGNED_SHORT, offset * Uint16Array.BYTES_PER_ELEMENT)
-          //   offset = Particle.lineCounts[i]
-          // }
-        // }
         // end line
-        // composite
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-        // gl.useProgram(comp.prog)
-        // gl.bindBuffer(gl.ARRAY_BUFFER, this.board)
-        // gl.enableVertexAttribArray(comp.attr.position.location)
-        // gl.vertexAttribPointer(comp.attr.position.location, comp.attr.position.size, gl.FLOAT, false, 0, 0)
-        //
-        // gl.activeTexture(gl.TEXTURE0)
-        // gl.bindTexture(gl.TEXTURE_2D, part.fTex)
-        // gl.uniform1i(comp.unif.particle.location, 0)
-        //
-        // gl.activeTexture(gl.TEXTURE1)
-        // gl.bindTexture(gl.TEXTURE_2D, line.fTex)
-        // gl.uniform1i(comp.unif.line.location, 1)
-        //
-        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.boardIndex)
-        // gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0)
-        // end composite
       }
     }
 

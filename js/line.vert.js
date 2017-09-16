@@ -2,16 +2,19 @@
 DHFT2017.line = DHFT2017.line || {}
 DHFT2017.line.vert = `
 attribute   vec3  position;
-attribute   vec3  velocity;
-attribute   vec3  color;
+attribute   float radius;
+attribute   float id;
 varying     vec4  pColor;
-varying     float veloMag;
 uniform     mat4  mvpMatrix;
+uniform     vec3  colorSet[5];
 
 void main (void) {
-  pColor = vec4(color, 1.0);
-  veloMag = length(velocity);
-  gl_Position = mvpMatrix * vec4(position, 1.0);
+  gl_Position = mvpMatrix * vec4(position * radius, 1.0);
+       if (int(id) == 0) { pColor = vec4(colorSet[0], 0.8); }
+  else if (int(id) == 1) { pColor = vec4(colorSet[1], 0.8); }
+  else if (int(id) == 2) { pColor = vec4(colorSet[2], 0.8); }
+  else if (int(id) == 3) { pColor = vec4(colorSet[3], 0.8); }
+  else if (int(id) == 4) { pColor = vec4(colorSet[4], 0.8); }
 }
 
 `

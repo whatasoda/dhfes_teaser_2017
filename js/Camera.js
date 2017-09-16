@@ -55,7 +55,7 @@
 
     constructor (option = {}) {
       super(option)
-      this.fovy = option.fovy || 90
+      this.fovy = (option.fovy || 90) / 180 * Math.PI
     }
 
     get projectionMatrix () {

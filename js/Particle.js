@@ -25,7 +25,7 @@
 
       this.cLength = length
       this.pDensity = parseInt(myRand(...this.ranges.pDensity))
-      this.pLength = length * this.pDensity
+      this.pLength = length * (this.pDensity - 1)
       this.tStep = 1 / this.pDensity
       this.frame = 0
       this.refreshSpan = parseInt(myRand(...this.ranges.refreshSpan))
@@ -53,17 +53,20 @@
           3*CV1[0] - 3*CV2[0] + CV3[0]
         )
         tmpCVCoef[1].push(
-          CV1[1],
-          2*CV1[1],
-          -5*CV1[1] + 3*CV2[1],
-          2*CV1[1] - 3*CV2[1] + CV3[1]
+          0,
+          3*CV1[0],
+          -6*CV1[0] + 3*CV2[0],
+          3*CV1[0] - 3*CV2[0] + CV3[0]
         )
 
         this.SSToXYZ(CV2XYZ, CV2)
+        CV3[0] *= -1
         this.rotateSS(CV2XYZ, CV2XYZ, CV3)
-        this.XYZtoSS(CV2XYZ, CV1) // nextCV1
+        CV3[0] *= -1
+        this.XYZtoSS(CV1, CV2XYZ) // nextCV1
         CV1[1] += Math.PI
         CV1[1] %= PI2
+        CV1[0] %= PI2
         tmpCV.push( ...CV2, ...CV3, ...CV1)
       }
       tmpCV.pop()
@@ -74,49 +77,62 @@
       ]
 
 
-      const tmpPosition = []
-      const tmpColor = []
-      const tmpLineOrder = []
-      const tmpRGB = this.tmp.color
-      const ColorSet = DHFT2017.ColorSet[parseInt(myRand(DHFT2017.ColorSet.length))]
+      this.colorSet = new Float32Array( DHFT2017.ColorSet[parseInt(myRand(DHFT2017.ColorSet.length))] )
+      this.clearColor = glmx.vec4.create()
+      const CC = this.clearColor
+      let c3
+      for (let c=0; c<5; c++) {
+        c3 = c*3
+        CC[0] += this.colorSet[c3]
+        CC[1] += this.colorSet[c3+1]
+        CC[2] += this.colorSet[c3+2]
+      }
+      glmx.vec3.scale(CC, CC, -0.1)
+      CC[0] += 1
+      CC[1] += 1
+      CC[2] += 1
+      CC[3] = 1
+      glmx.vec3.set(CC, 0,0,0x32 / 0x100)
+      const useColor     = []
+      for (let i=0; i<this.cLength; i++)
+        useColor.push( parseInt(myRand(5)) )
 
-      let id4, t
+      const tmpPosition  = []
+      const tmpLineOrder = []
+      const tmpId        = []
       const T = glmx.vec4.create()
       const C = glmx.vec2.create()
       const tmpXYZ = this.tmp.XYZ
-      const tmpQuat = this.tmp.quat
       const current = glmx.vec3.fromValues(0,0,1)
+      const currentBaseSS = glmx.vec2.fromValues(0,0)
+      let id, id4, t
       glmx.vec3.set(tmpXYZ, 0, 1, 0)
       for (let n=0; n<this.pLength; n++) {
-        id4 = 4 * parseInt(n / this.pDensity)
-        t = this.tStep * (n % this.pDensity)
+        id = parseInt(n / (this.pDensity - 1))
+        tmpId.push(useColor[id])
+        id4 = 4 * id
+        t = this.tStep * (n % (this.pDensity - 1))
         glmx.vec4.set(T, 0, t, t*t, t*t*t)
 
         glmx.vec2.set(C, 0, 0)
         for (let d=0; d<2; d++) for (let i=0; i<4; i++)
           C[d] += CVCoef[d][id4+i] * T[i]
-        this.rotateSS(tmpXYZ, tmpXYZ, C)
-        glmx.quat.setAxisAngle(tmpQuat, tmpXYZ, 0.3)
-        glmx.vec3.transformQuat(current, current, tmpQuat)
+        this.rotateSS(current, tmpXYZ, C)
+        this.rotateSS(current, current, currentBaseSS)
         glmx.vec3.normalize(current, current)
+        if ( id !== parseInt((n + 1) / this.pDensity) )
+          this.XYZtoSS(currentBaseSS, current)
         tmpPosition.push(...current)
-        const useColor = ColorSet[parseInt(myRand(5))]
-        const cNoise = myRand(...this.ranges.cNoise)
-
-        glmx.vec3.set(tmpRGB, useColor[0]+cNoise, useColor[1]+cNoise, useColor[2]+cNoise)
-        tmpColor.push( ...tmpRGB )
         if (n)
           tmpLineOrder.push( n-1, n )
       }
-      this.positionBase       = new Float32Array(tmpPosition)
       this.attrData = {}
       this.attrData.position  = new Float32Array(tmpPosition)
-      this.attrData.color     = new Float32Array(tmpColor)
       this.attrData.radius    = new Float32Array(this.pLength)
+      this.attrData.id        = new Float32Array(tmpId)
       this.attrData.radius.fill(1)
 
       this.lineOrder        = new Uint16Array(tmpLineOrder)
-      this.lineCounts       = new Uint16Array([0,1,2,3,4,5,6])
 
       this.attrBuf = {}
       let tmpBuffer
@@ -146,18 +162,8 @@
       if (this.tmp)
         return null
       this.tmp = {}
-      this.tmp.acceleration = glmx.vec3.create()
       this.tmp.XYZ          = glmx.vec3.create()
       this.tmp.quat         = glmx.quat.create()
-      this.tmp.position     = glmx.vec3.create()
-      this.tmp.outPosition  = glmx.vec3.create()
-      this.tmp.velocity     = glmx.vec3.create()
-      this.tmp.outVelocity  = glmx.vec3.create()
-      this.tmp.color        = glmx.vec3.create()
-      this.tmp.relativePos  = glmx.vec3.create()
-      this.tmp.rotate       = glmx.vec3.create()
-      this.tmp.axis         = glmx.vec3.create()
-      this.tmp.useSpot      = new Int16Array(7)
     }
 
     getRandomBezierCVOnSphereSuface(out, randomFunc) {
@@ -221,7 +227,7 @@
       let sin1 = Math.sin(SS[1])
       let cos1 = Math.cos(SS[1])
       glmx.vec3.set(axis, -sin1, 0, cos1)
-      glmx.quat.setAxisAngle(quat, axis, -SS[0])
+      glmx.quat.setAxisAngle(quat, axis, SS[0])
       glmx.vec3.transformQuat(out, XYZ, quat)
     }
 
@@ -234,73 +240,13 @@
       let n = -1
       let step = 10 * Math.PI /this.pLength
       while (++n < this.pLength) {
-        radius = Math.cos((this.frame + n) * step + (Math.sin(( n) * step) * 0.2 + 0.3)) + 1.2
-        radius *= Math.min(this.frame, 100) * 0.03
-        radius *= Math.cos(Math.cos(this.frame * 0.005) *Math.PI) + 1.1
+        radius = Math.cos((this.frame + n) * step + (Math.tan(n * step) * 0.2 + 0.3)) + 1.2
+        radius *= (1-Math.cos(Math.min(Math.max((this.frame - 90) * 0.01, 0), 1) * Math.PI)) * 2
+        radius *= Math.cos(Math.cos(this.frame * 0.005) * Math.PI) + 1.5
         radius += 0.5
         if (!DHFT2017.enableAnimate)
-          radius = 1
+          radius = 5
         this.attrData.radius[n] = radius * 10
-        // glmx.vec3.set(tmp.position,
-        //   this.attrData.position[n*3 + 0],
-        //   this.attrData.position[n*3 + 1],
-        //   this.attrData.position[n*3 + 2]
-        // )
-        // glmx.vec3.set(tmp.outPosition, 0, 0, 0)
-        // glmx.vec3.set(tmp.velocity,
-        //   this.attrData.velocity[n*3 + 0],
-        //   this.attrData.velocity[n*3 + 1],
-        //   this.attrData.velocity[n*3 + 2]
-        // )
-        // glmx.vec3.set(tmp.outVelocity, 0, 0, 0)
-        // glmx.vec3.set(tmp.color,
-        //   this.attrData.color[n*3 + 0],
-        //   this.attrData.color[n*3 + 1],
-        //   this.attrData.color[n*3 + 2]
-        // )
-        //
-        // veloMag = glmx.vec3.length(tmp.velocity)
-        // posMag = glmx.vec3.length(tmp.position)
-        //
-        // tmp.useSpot[0] = this.useSpot[7*n + 0]
-        // tmp.useSpot[1] = this.useSpot[7*n + 1]
-        // tmp.useSpot[2] = this.useSpot[7*n + 2]
-        // tmp.useSpot[3] = this.useSpot[7*n + 3]
-        // tmp.useSpot[4] = this.useSpot[7*n + 4]
-        // tmp.useSpot[5] = this.useSpot[7*n + 5]
-        // tmp.useSpot[6] = this.useSpot[7*n + 6]
-        //
-        // for (let i of tmp.useSpot) {
-        //   spot.current = this.spotPointer[i]
-        //   glmx.vec3.sub(tmp.relativePos, tmp.position, spot.gPosition)
-        //   if (i % 2)
-        //     glmx.vec3.cross(tmp.rotate, spot.gAxis, tmp.relativePos)
-        //   else
-        //     glmx.vec3.cross(tmp.rotate, tmp.relativePos, spot.gAxis)
-        //
-        //   radius = Math.max(glmx.vec3.length(tmp.relativePos), glmx.glMatrix.EPSILON)
-        //   gravMag = spot.gMag / Math.min(Math.max( Math.pow(radius, 2), glmx.glMatrix.EPSILON), spot.gFarLimit)
-        //   rotMag = Math.sqrt( spot.gMag / Math.min(Math.max(radius, spot.gNearLimit), spot.gFarLimit) ) * glmx.vec3.length(tmp.rotate) / radius
-        //
-        //   glmx.vec3.normalize(tmp.relativePos, tmp.relativePos)
-        //   glmx.vec3.scale(tmp.relativePos, tmp.relativePos, -gravMag)
-        //
-        //   glmx.vec3.normalize(tmp.rotate, tmp.rotate)
-        //   glmx.vec3.scale(tmp.rotate, tmp.rotate, (rotMag - glmx.vec3.dot(tmp.rotate, tmp.velocity) ) * spot.gRotWeight )
-        //
-        //   glmx.vec3.add(tmp.acceleration, tmp.acceleration, tmp.rotate)
-        //   glmx.vec3.add(tmp.acceleration, tmp.acceleration, tmp.relativePos)
-        // }
-        // glmx.vec3.scale(tmp.acceleration, tmp.acceleration, 0.05)
-        //
-        // glmx.vec3.add(tmp.outVelocity, tmp.velocity, tmp.acceleration)
-        // glmx.vec3.add(tmp.outPosition, tmp.position, tmp.outVelocity)
-        //
-        // for (i=0; i<3; i++) {
-        //   this.attrData.position[n*3+i] = tmp.outPosition[i]
-        //   this.attrData.velocity[n*3+i] = tmp.outVelocity[i]
-        // }
-
       } // while END
 
       gl.bindBuffer(gl.ARRAY_BUFFER, this.attrBuf.radius)
