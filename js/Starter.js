@@ -14,11 +14,12 @@
         DHFT2017.Camera.using &&
         DHFT2017.Particle.using
       ) {
-        DHFT2017.Particle.using.calc()
-        DHFT2017.Camera.using.spherical.alpha += 0.3
-        DHFT2017.Camera.using.fovy =
-          (Math.pow(Math.sin(DHFT2017.Particle.using.frame * 0.003), 2) + 0.3) * Math.PI / 5
-
+        if (Starter.currentFrame > 5 * DHFT2017.speed - 50 || Starter.currentFrame < 2) {
+          DHFT2017.Particle.using.calc()
+          DHFT2017.Camera.using.spherical.alpha += 0.3
+          DHFT2017.Camera.using.fovy =
+            (Math.pow(Math.sin(DHFT2017.Particle.using.frame * 0.003), 2) + 0.3) * Math.PI / 5
+        }
         // DHFT2017.Camera.using.spherical.beta += 1
         // DHFT2017.Camera.using.spherical.gamma += 0.3
         // DHFT2017.RendererBase.using.gl.viewport(0, 0, DHFT2017.RendererBase.using.canvas.width, DHFT2017.RendererBase.using.canvas.height)

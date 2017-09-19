@@ -3,21 +3,27 @@
   const originalRandom = Math.generateRandom(
     Math.floor(Math.random() * (1 << 30)),
     Math.floor(Math.random() * (1 << 30)), 17, 8, 15)
-  console.log(`Using Seed Value: [u: ${originalRandom.u}, v: ${originalRandom.v}, sequence: ${originalRandom.x}-${originalRandom.y}-${originalRandom.z} ]`)
+  // console.log(`Using Seed Value: [u: ${originalRandom.u}, v: ${originalRandom.v}, sequence: ${originalRandom.x}-${originalRandom.y}-${originalRandom.z} ]`)
   DHFT2017.originalRandom = originalRandom
 
   let width = 700
   let height = 700
+  const container = document.getElementsByClassName('p-header__wrapper')[0]
   const Renderer = new DHFT2017.RendererBase(width, height,
     [
       DHFT2017.ParticleShader,
     ],
     {
-      container: document.getElementsByClassName('p-header__wrapper')[0]
+      container: container
     },
   )
   Renderer.setCurrent()
   Renderer.clear()
+
+  container.style.width = '100%'
+  container.style.height = '100vh'
+  Renderer.canvas.style.width = '100%'
+  Renderer.canvas.style.height = '100%'
 
   DHFT2017.enableAnimate = false
   DHFT2017.enableAnimate = true
@@ -36,6 +42,7 @@
   })
   Camera.setCurrent()
 
+  DHFT2017.speed = 35
   let i = 0
   // while (i++ < 25)
     DHFT2017.Particle.using.calc()

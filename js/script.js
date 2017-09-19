@@ -38,6 +38,8 @@
       {name:'composite.frag',   async: false,},
       {name:'fadeout.vert',     async: false,},
       {name:'fadeout.frag',     async: false,},
+      {name:'start.vert',       async: false,},
+      {name:'start.frag',       async: false,},
       {name:'ParticleShader',   async: false,},
       {name:'Particle',         async: false,},
       {name:'main',             async: false,},
