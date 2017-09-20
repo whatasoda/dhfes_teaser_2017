@@ -1,3 +1,6 @@
+;((DHFT2017) => {
+DHFT2017.start = DHFT2017.start || {}
+DHFT2017.start.vert = `
 attribute   vec2  board;
 uniform     float radius;
 uniform     float aspect; // width / height
@@ -15,3 +18,6 @@ void main(void) {
   limitLength = sqrt(pow( (idealAspect - aspect) * aspectMag + aspect, 2.0) + 1.0);
   unitCoord.x *= pow(aspect, aspectMag);
 }
+
+`
+})(window.DHFT2017 = window.DHFT2017 || {})

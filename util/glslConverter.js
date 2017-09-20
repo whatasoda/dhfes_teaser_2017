@@ -17,7 +17,7 @@ for (const fileName of fileNameList) {
       `\``,
       '})(window.DHFT2017 = window.DHFT2017 || {})'
     )
-    fse.writeFileSync(`./js/${fileName}.js`,contents.join('\n'))
+    fse.writeFileSync(`./js/glsl/${fileName}.js`,contents.join('\n'))
     succeeded.push(fileName)
   } catch (e) {
     console.log(e)

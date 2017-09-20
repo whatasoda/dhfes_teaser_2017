@@ -25,7 +25,7 @@
   Renderer.canvas.style.width = '100%'
   Renderer.canvas.style.height = '100%'
 
-  DHFT2017.enableAnimate = false
+  // DHFT2017.enableAnimate = false
   DHFT2017.enableAnimate = true
   const Particle = new DHFT2017.Particle(30, {
     gLength    : [0, 1],
@@ -43,8 +43,7 @@
   Camera.setCurrent()
 
   DHFT2017.speed = 35
-  let i = 0
-  // while (i++ < 25)
-    DHFT2017.Particle.using.calc()
+
+  DHFT2017.Particle.using.calc()
   DHFT2017.Starter.animate()
 })(window.DHFT2017 = window.DHFT2017 || {})
