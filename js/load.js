@@ -3,7 +3,7 @@
   document.getElementsByTagName('link')[0].remove()
   /* import scripts */
   const scripts = document.getElementsByTagName('script')
-  const initialSrc = 'js/script.js'
+  const initialSrc = 'js/load.js'
   let initialTag
   for (const script of scripts)
     if (script.src.slice(-initialSrc.length) === initialSrc) {
