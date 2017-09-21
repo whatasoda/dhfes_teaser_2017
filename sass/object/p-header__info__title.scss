@@ -1,0 +1,10 @@
+.p-header__info__title {
+  @include font-Play;
+  font-size: 50px;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 37px;
+  letter-spacing: 0.17em;
+  line-height: 1.3;
+}

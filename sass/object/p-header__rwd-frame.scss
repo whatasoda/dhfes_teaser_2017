@@ -1,0 +1,9 @@
+.p-header__rwd-frame {
+  width: 1024px;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 0.1px;
+  @include sp {
+    width: 100%;
+  }
+}

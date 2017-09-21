@@ -5,8 +5,12 @@
     constructor (width, height, shaders, option = {}) {
       this.availability = true
       this.canvas = document.createElement("canvas")
-      if (option.container instanceof Element)
-        option.container.append(this.canvas)
+      if (option.container instanceof Element) {
+        if (option.container.firstChild)
+          option.container.insertBefore(this.canvas, option.container.firstChild)
+        else
+          option.container.append(this.canvas)
+      }
       this.width = width
       this.height = height
       this.shaders = []

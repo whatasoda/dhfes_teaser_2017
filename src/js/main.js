@@ -1,5 +1,5 @@
 ;((DHFT2017) => {
-  const container = document.getElementsByClassName('p-header__wrapper')[0]
+  const container = document.getElementById('header__canvas')
   new DHFT2017.RendererBase(512, 512,
     [ DHFT2017.ParticleShader, ],
     { container: container, },
@@ -8,11 +8,6 @@
     spherical: new DHFT2017.Spherical({ radius: 300, }),
     far: 1000,
   }).setCurrent()
-
-  container.style.width = '100%'
-  container.style.height = '100vh'
-  DHFT2017.RendererBase.using.canvas.style.width = '100%'
-  DHFT2017.RendererBase.using.canvas.style.height = '100%'
 
   const seedPattern = /^#[0-9a-vA-V]{12}$/
   let u, v

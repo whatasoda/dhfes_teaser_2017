@@ -35,35 +35,32 @@
     <meta name="twitter:domain" content="">
     <meta name="twitter:creator" content="@">
     <meta name="twitter:image:src" content="http://.png">
-    <!--===========================================
-        Normalize.css && Web-Font && import.css の設置
-    ============================================-->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
   <header>
-    <div class="p-header__wrapper"></div>
-    <div class="p-header__info">
-      <div class="p-header__info--dhu">DHU</div>
-      <div class="p-header__info__title">
-        <p>
-          SCHOOL<br>
-          FESTIVAL<br>
-          <span class="p-header__info__title--small">〜<h1>デジハリ祭</h1>〜</span>
-        </p>
-      </div>
-      <div class="p-header__info__bar"></div>
-      <div class="p-header__info__desc">
-        <p class="p-header__info__desc__txt">
-          <span class="p-header__info__desc__txt--small">2017.</span>11.26-11.27<br>
-          @<span class="p-header__info__desc__txt--Noto">デジタルハリウッド大学</span><br>
-        </p>
-      </div>
-      <div class="p-header__info--countdown__box" >
-        <p class="p-header__info--countdown"><span id="countDown">10</span>日後</p>
+    <div id="header__canvas">
+      <div class="p-header__rwd-frame">
+        <div class="p-header__info">
+          <div class="p-header__info--dhu">DHU</div>
+          <div class="p-header__info__title">
+            <p>
+              SCHOOL<br>
+              FESTIVAL<br>
+              <h1 class="p-header__info__title--small">〜デジハリ祭〜</h1>
+            </p>
+          </div>
+          <div class="p-header__info__bar"></div>
+          <div class="p-header__info__desc">
+            <p class="p-header__info__desc__txt">
+              <span class="p-header__info__desc__txt--small">2017.</span>11.26-11.27<br>
+              <span class="p-header__info__desc__txt--Noto">@デジタルハリウッド大学</span><br>
+            </p>
+          </div>
+          <div class="p-header__info--countdown__box" >
+            <p class="p-header__info--countdown"><span id="countDown">10</span>日後開催</p>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -72,23 +69,54 @@
       <h1 class="c-contents__heading">デジハリ祭・開催情報</h1>
       <div class="p-schedule__bar"></div>
       <p class="c-contents__desc">ABOUT THE EVENT</p>
-    </div>
-    <div class="p-schedule__list">
-      <h2 class="p-schedule__list__heading">１日目</h2>
-      <p class="p-schedule__list__item">１１月２６日（土）　<br class="lf-sp">開場 ・１０：００　終了・１７：００</p>
-      <h2 class="p-schedule__list__heading">２日目</h2>
-      <p class="p-schedule__list__item">１１月２７日（日）　<br class="lf-sp">開場 ・１０：００　終了・１７：００</p>
-      <h2 class="p-schedule__list__heading">交流会</h2>
-      <p class="p-schedule__list__item">
-        １１月２６日（土）　<br class="lf-sp">開場 ・１８：００　終了・２０：００<br>
-        <span class="p-schedule--notes">＊関係者限定</span>
-      </p>
+      <div class="p-schedule__list">
+        <h2 class="p-schedule__list__heading">Day1</h2>
+        <p class="p-schedule__list__item">2017.11.26     <br class="lf-sp">10:00 - 17:00</p>
+        <h2 class="p-schedule__list__heading">Day2</h2>
+        <p class="p-schedule__list__item">2017.11.27     <br class="lf-sp">10:00 - 17:00</p>
+      </div>
     </div>
   </section>
-  <section></section>
+  <section>
+    <div class="p-contact__gradation">
+      <div class="c-contents">
+        <h1 class="c-contents__heading">お問い合わせ</h1>
+        <div class="p-contact__bar"></div>
+        <p class="c-contents__desc">CONTACT US</p>
+      </div>
+      <p class="p-contact__desc">
+        協賛に関しての資料をご用意しておりますので<br>
+        広告掲載や協賛をご希望される企業様、<br>
+        また、取材を希望されるメディア様は<br>
+        以下のフォームよりお問い合わせ下さい。<br>
+      </p>
+      <a href="#" class="p-contact__cv-btn">今すぐ問い合わせる</a>　<!-- Googleフォームのリンクを貼る -->
+    </div>
+  </section>
   <footer>
-    <nav></nav>
-    <nav></nav>
+    <nav>
+      <ul class="p-footer__sns__list">
+        <li class="p-footer__sns__list__item"><a href="#"><i class="ion-social-twitter-outline"></i><i class="ion-social-twitter"></i></a></li>
+        <li class="p-footer__sns__list__item"><a href="#"><i class="ion-social-facebook-outline"></i><i class="ion-social-facebook"></i></a></li>
+        <li class="p-footer__sns__list__item"><a href="#"><i class="ion-social-instagram-outline"></i><i class="ion-social-instagram"></i></a></li>
+      </ul>
+    </nav>
+    <nav>
+      <ul class="p-footer__link__list">
+        <li class="p-footer__link__list__item"><a href="#"><i class="ion-arrow-right-b"></i> デジタルハリウッド大学 公式サイト</a></li>
+        <li class="p-footer__link__list__item"><a href="#"><i class="ion-arrow-right-b"></i> 2016年度 学園祭サイト</a></li>
+      </ul>
+    </nav>
+    <dl class="p-footer__steakholder"><!-- DLについてのリンク　http://taneppa.net/dl_float/ -->
+      <dt class="p-footer__organizer__list">主催：</dt>
+      <dd class="p-footer__organizer__item">デジタルハリウッド大学・デジハリ祭実行委員会</dd>
+      <dt class="p-footer__sponsor__list">協賛：</dt>
+      <dd class="p-footer__sponsor__item">
+        現在調整中・現在調整中・現在調整中・現在調整中<br>
+        現在調整中・現在調整中・現在調整中</dd>
+    </dl>
+    <hr class="p-footer__hr">
+    <p class="copyright">© 2017 DIGITAL AZARASHI, All Rights Reserved.</p>
   </footer>
   <script src="src/js/load.js"></script>
   <!-- <script src="js/script.js"></script> -->
