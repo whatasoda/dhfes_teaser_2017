@@ -11,3 +11,10 @@ $widthSP: 414px; //スマートフォン
     @content;
   }
 }
+
+@mixin font-Noto {
+  font-family: 'Noto Sans', sans-serif;
+}
+@mixin font-Play {
+  font-family: 'Play', sans-serif;
+}

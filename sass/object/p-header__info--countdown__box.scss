@@ -1,0 +1,15 @@
+.p-header__info--countdown__box {
+  width: 200px;
+  height: 40px;
+  background-color: #DB1D18;
+  color: #fff;
+  font-size: 25px;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  @include font-Noto;
+}

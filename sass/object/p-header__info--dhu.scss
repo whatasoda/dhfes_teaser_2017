@@ -2,11 +2,11 @@
   width: 130px;
   height: 40px;
   background-color: #DB1D18;
-  font-family: 'Play', sans-serif;
   color: #fff;
   font-size: 30px;
   font-weight: bold;
   text-align: center;
   letter-spacing: 0.15em;
-  line-height: 1.2;  
+  line-height: 1.2;
+  @include font-Play;
 }
