@@ -4,14 +4,23 @@
   const PI2 = Math.PI * 2
 
   class Particle {
-    constructor(length, ranges) {
+    constructor(length, ranges, option = {}) {
       if (!DHFT2017.RendererBase.using)
         return null
       const gl = DHFT2017.RendererBase.using.gl
       this.gl = gl
-      const myRand = DHFT2017.originalRandom
-      this.createTmp()
 
+      this.frame = option.frame || 0
+      const myRand = Math.generateRandom(
+        option.u || Math.floor(Math.random() * (1 << 30)),
+        option.v || Math.floor(Math.random() * (1 << 30)),
+        17, 8, 15
+      )
+      // console.log(`Using Seed Value: [u: ${myRand.u}, v: ${myRand.v}, sequence: ${myRand.x}-${myRand.y}-${myRand.z} ]`)
+      DHFT2017.seed = ( ('00000' + myRand.u.toString(32)).slice(-6) + ('00000' + myRand.v.toString(32)).slice(-6) ).toUpperCase()
+
+
+      this.createTmp()
       this.ranges = ((ranges, props) => {
         for (let prop of props)
           ranges[prop] = new Float32Array(ranges[prop] || [0, 0])
@@ -24,7 +33,6 @@
       this.pDensity = parseInt(myRand(...this.ranges.pDensity))
       this.pLength = length * (this.pDensity - 1)
       this.tStep = 1 / this.pDensity
-      this.frame = 0
 
       const tmpCV = []
       // i+0,1: CV1, i+2,3: CV2, i+4,5: CV3
@@ -120,8 +128,6 @@
         if ( id !== parseInt((n + 1) / this.pDensity) )
           this.XYZtoSS(currentBaseSS, current)
         tmpPosition.push(...current)
-        if (n)
-          tmpLineOrder.push( n-1, n )
       }
       this.attrData = {}
       this.attrData.position  = new Float32Array(tmpPosition)
@@ -129,25 +135,16 @@
       this.attrData.id        = new Float32Array(tmpId)
       this.attrData.radius.fill(1)
 
-      this.lineOrder        = new Uint16Array(tmpLineOrder)
-
-      this.attrBuf = {}
-      let tmpBuffer
+      if (!Particle.attrBuf) {
+        Particle.attrBuf = {}
+        for (const bufferName in this.attrData)
+          Particle.attrBuf[bufferName] = gl.createBuffer()
+      }
       for (const bufferName in this.attrData) {
-        if ( (tmpBuffer = gl.createBuffer()) ) {
-          this.attrBuf[bufferName] = tmpBuffer
-          gl.bindBuffer(gl.ARRAY_BUFFER, this.attrBuf[bufferName])
+          gl.bindBuffer(gl.ARRAY_BUFFER, Particle.attrBuf[bufferName])
           gl.bufferData(gl.ARRAY_BUFFER, this.attrData[bufferName], gl.DYNAMIC_DRAW)
           gl.bindBuffer(gl.ARRAY_BUFFER, null)
-        }
       }
-      if ( (tmpBuffer = gl.createBuffer()) ) {
-        this.indexBuffer = tmpBuffer
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.lineOrder, gl.DYNAMIC_DRAW)
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
-      }
-
     }
 
 
@@ -244,7 +241,7 @@
         this.attrData.radius[n] = radius * 10
       }
 
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.attrBuf.radius)
+      gl.bindBuffer(gl.ARRAY_BUFFER, Particle.attrBuf.radius)
       gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.attrData.radius)
 
 

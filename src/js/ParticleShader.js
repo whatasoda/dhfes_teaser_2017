@@ -30,16 +30,15 @@
 
       if (DHFT2017.Particle.using && DHFT2017.Camera.using) {
         const Camera = DHFT2017.Camera.using
-        const Particle = DHFT2017.Particle.using
+        const Particle = DHFT2017.Particle
         const mvpMatrix = Camera.vpMatrix
         const part = this.shaders.particle
         const line = this.shaders.line
         const start = this.shaders.start
 
-        Renderer.clear(Particle.clearColor)
+        Renderer.clear(Particle.using.clearColor)
         const speed = DHFT2017.speed
         if (DHFT2017.Starter.currentFrame > 2 * speed) {
-          // particle
           gl.useProgram(part.prog)
           this.assignAttribBuffer(Particle, part)
           gl.uniformMatrix4fv(part.unif.mvpMatrix.location, false, mvpMatrix)
@@ -49,16 +48,8 @@
           const sizeRange = 1200
           gl.uniform1f(part.unif.sizeRange.location, sizeRange)
           gl.uniform1f(part.unif.divSizeRange.location, 1 / sizeRange)
-          gl.uniform3fv(part.unif.colorSet.location, Particle.colorSet)
-          gl.drawArrays(gl.POINTS, 0, Particle.pLength)
-          // end particle
-          // line
-          // gl.useProgram(line.prog)
-          // gl.uniformMatrix4fv(line.unif.mvpMatrix.location, false, mvpMatrix)
-          // gl.uniform3fv(line.unif['colorSet[0]'].location, Particle.colorSet)
-          // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Particle.indexBuffer)
-          // gl.drawElements(gl.LINE_STRIP, Particle.pLength - 1, gl.UNSIGNED_SHORT, 0)
-          // end line
+          gl.uniform3fv(part.unif.colorSet.location, Particle.using.colorSet)
+          gl.drawArrays(gl.POINTS, 0, Particle.using.pLength)
         }
         if (DHFT2017.Starter.currentFrame < 5.6 * speed){
 
@@ -70,7 +61,7 @@
           const shutStep = 17.5 / speed
           for (let i=0; i<5; i++)
             this.shutMug[i] -= shutStep
-          gl.uniform3fv(start.unif.colorSet.location, Particle.colorSet)
+          gl.uniform3fv(start.unif.colorSet.location, Particle.using.colorSet)
           gl.uniform1fv(start.unif.shutMug.location, this.shutMug)
           const frame = DHFT2017.Starter.currentFrame
           const radius = Math.min(15, Math.max(Math.tan(frame / speed / 2.5 - 1.0) * 7 + 1, 1) )
