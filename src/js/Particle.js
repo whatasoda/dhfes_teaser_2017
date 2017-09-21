@@ -17,10 +17,7 @@
           ranges[prop] = new Float32Array(ranges[prop] || [0, 0])
         return ranges
       })( ranges = ranges || {}, [
-        'pLength', 'pDensity',
-        'pPositionX','pPositionY','pPositionZ',
-        'pVelocityX','pVelocityY','pVelocityZ',
-        'refreshSpan',
+        'pDensity',
       ])
 
       this.cLength = length
@@ -28,7 +25,6 @@
       this.pLength = length * (this.pDensity - 1)
       this.tStep = 1 / this.pDensity
       this.frame = 0
-      this.refreshSpan = parseInt(myRand(...this.ranges.refreshSpan))
 
       const tmpCV = []
       // i+0,1: CV1, i+2,3: CV2, i+4,5: CV3
@@ -53,9 +49,9 @@
           3*CV1[0] - 3*CV2[0] + CV3[0]
         )
         tmpCVCoef[1].push(
-          0,
-          3*CV1[0],
-          -6*CV1[0] + 3*CV2[0],
+          -CV1[0],
+          6*CV1[0],
+          -9*CV1[0] + 3*CV2[0],
           3*CV1[0] - 3*CV2[0] + CV3[0]
         )
 
@@ -80,20 +76,21 @@
       this.colorSet = new Float32Array( DHFT2017.ColorSet[parseInt(myRand(DHFT2017.ColorSet.length))] )
       this.clearColor = glmx.vec4.create()
       const CC = this.clearColor
-      let c3
-      for (let c=0; c<5; c++) {
-        c3 = c*3
-        CC[0] += this.colorSet[c3]
-        CC[1] += this.colorSet[c3+1]
-        CC[2] += this.colorSet[c3+2]
-      }
-      glmx.vec3.scale(CC, CC, -0.1)
-      CC[0] += 1
-      CC[1] += 1
-      CC[2] += 1
-      CC[3] = 1
-      glmx.vec3.set(CC, 0,0,0x32 / 0x100)
+      // let c3
+      // for (let c=0; c<5; c++) {
+      //   c3 = c*3
+      //   CC[0] += this.colorSet[c3]
+      //   CC[1] += this.colorSet[c3+1]
+      //   CC[2] += this.colorSet[c3+2]
+      // }
+      // glmx.vec3.scale(CC, CC, -0.1)
+      // CC[0] += 1
+      // CC[1] += 1
+      // CC[2] += 1
+      // CC[3] = 1
+      glmx.vec4.set(CC, 0,0,0x32 / 0xff, 1)
       const useColor     = []
+
       for (let i=0; i<this.cLength; i++)
         useColor.push( parseInt(myRand(5)) )
 
@@ -242,12 +239,10 @@
       while (++n < this.pLength) {
         radius = Math.cos((this.frame + n) * step + (Math.tan(n * step) * 0.2 + 0.3)) + 1.2
         radius *= (1-Math.cos(Math.min(Math.max((this.frame - 90) * 0.01, 0), 1) * Math.PI)) * 2
-        radius *= Math.cos(Math.cos(this.frame * 0.005) * Math.PI) + 1.5
+        radius *= Math.cos(Math.cos(this.frame * 0.005) * Math.PI) + 1
         radius += 0.5
-        if (!DHFT2017.enableAnimate)
-          radius = 5
         this.attrData.radius[n] = radius * 10
-      } // while END
+      }
 
       gl.bindBuffer(gl.ARRAY_BUFFER, this.attrBuf.radius)
       gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.attrData.radius)

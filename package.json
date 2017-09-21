@@ -16,7 +16,7 @@
     "GLSLConvert": "node util/glslConverter.js",
     "build": "node util/build.js",
     "colorConvert": "node util/colorConverter.js",
-    "watch:GLSLConvert": "watch 'npm run GLSLConvert' glsl"
+    "watch:GLSLConvert": "watch 'npm run GLSLConvert' src/glsl"
   },
   "repository": {
     "type": "git",

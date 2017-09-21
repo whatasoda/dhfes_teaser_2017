@@ -70,3 +70,5 @@ typings/
 
 *.csv
 *.xlsx
+
+js/script.js

@@ -1,6 +1,7 @@
 const fse = require('fs-extra')
-
-const fileNameList = fse.readdirSync('src/glsl').filter((fileName) => {
+const srcDir = 'src/glsl'
+const distDir = 'src/js/glsl'
+const fileNameList = fse.readdirSync(srcDir).filter((fileName) => {
   return /\.(?:vert|frag)$/.test(fileName)
 })
 const succeeded = []
@@ -13,11 +14,11 @@ for (const fileName of fileNameList) {
       ';((DHFT2017) => {',
       `DHFT2017.${name} = DHFT2017.${name} || {}`,
       `DHFT2017.${name}.${ext} = \``,
-      fse.readFileSync(`./glsl/${fileName}`, 'utf8'),
+      fse.readFileSync(`${srcDir}/${fileName}`, 'utf8'),
       `\``,
       '})(window.DHFT2017 = window.DHFT2017 || {})'
     )
-    fse.writeFileSync(`src/js/glsl/${fileName}.js`,contents.join('\n'))
+    fse.writeFileSync(`${distDir}/${fileName}.js`,contents.join('\n'))
     succeeded.push(fileName)
   } catch (e) {
     console.log(e)
