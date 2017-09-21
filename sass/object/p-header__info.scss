@@ -3,4 +3,8 @@
   height: 494px;
   margin: 138px 0 0 124px;
   position: relative;
+  @include sp {
+    margin: 35px auto;
+    width: 320px;
+  }
 }

@@ -3,4 +3,7 @@
   margin: 0 auto;
   height: 100vh;
   padding: 0.1px;
+  @include sp {
+    width: 100%;
+  }
 }

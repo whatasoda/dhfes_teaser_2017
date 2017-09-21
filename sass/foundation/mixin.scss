@@ -2,12 +2,12 @@ $widthPC: 1024px; //PC
 $widthSP: 414px; //スマートフォン
 
 @mixin tb {
-  @media (min-width: $widthSP) and (max-width: ($widthPC)) {
+  @media screen and (min-width: $widthSP) and (max-width: ($widthPC)) {
     @content;
   }
 }
 @mixin sp {
-  @media (max-width: ($widthSP)) {
+  @media screen and (max-width: ($widthSP)) {
     @content;
   }
 }
