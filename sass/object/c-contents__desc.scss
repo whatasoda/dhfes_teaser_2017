@@ -1,0 +1,17 @@
+.c-contents__desc {
+  margin-top: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  @include font-Play;
+  @include sp {
+  }
+}
+
+.p-schedule .c-contents__desc {
+  color: $black;
+  margin-bottom: 50px;
+  @include sp {
+  }
+}
