@@ -68,3 +68,8 @@ typings/
 css/style.css
 
 # End of https://www.gitignore.io/api/sass,node
+
+*.csv
+*.xlsx
+
+js/script.js
