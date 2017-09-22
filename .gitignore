@@ -73,3 +73,5 @@ css/style.css
 *.xlsx
 
 js/script.js
+
+dist
