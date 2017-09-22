@@ -1,9 +1,13 @@
 .c-contents__heading {
+  font-size: 25px;
+  @include font-Noto;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 45px;
   @include sp {
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 45px;
-    @include font-Noto;
   }
+}
+
+.p-schedule .c-contents__heading {
+  color: $black;
 }

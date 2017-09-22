@@ -1,9 +1,10 @@
 .p-schedule__list__heading {
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 8px;
+  @include font-Play;
   @include sp {
-    color: #fff;
-    font-size: 20px;
-    text-align: center;
-    @include font-Play;
     margin-top: 22px;
   }
 }
