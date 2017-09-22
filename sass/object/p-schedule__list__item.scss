@@ -1,0 +1,13 @@
+.p-schedule__list__item {
+  @include sp {
+    margin-top: 7px;
+    margin-left: 25px;
+    font-size: 20px;
+    @include font-Play;
+    line-height: 1.4;
+  }
+}
+
+.p-schedule .c-contents__item {
+  color: $black;
+}

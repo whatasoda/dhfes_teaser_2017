@@ -1,6 +1,4 @@
-$widthPC: 1024px; //PC
-$widthSP: 414px; //スマートフォン
-
+// メディアクエリー
 @mixin tb {
   @media screen and (min-width: $widthSP) and (max-width: ($widthPC)) {
     @content;

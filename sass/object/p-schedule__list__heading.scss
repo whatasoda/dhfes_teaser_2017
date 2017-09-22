@@ -1,0 +1,9 @@
+.p-schedule__list__heading {
+  @include sp {
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    @include font-Play;
+    margin-top: 22px;
+  }
+}

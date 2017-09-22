@@ -1,0 +1,9 @@
+.c-contents__heading {
+  @include sp {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 45px;
+    @include font-Noto;
+  }
+}

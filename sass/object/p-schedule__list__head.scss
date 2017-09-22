@@ -1,0 +1,8 @@
+.p-schedule__list__head {
+  @include sp {
+    width: 120px;
+    height: 68px;
+    background-color: $black;
+    position: absolute;
+  }
+}

@@ -1,0 +1,9 @@
+.p-schedule__bar {
+  @include sp {
+    width: 246px;
+    height: 3px;
+    background-color: $black;
+    margin: 0 auto;
+    margin-top: 5px;
+  }
+}
