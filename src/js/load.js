@@ -1,9 +1,11 @@
 ;((DHFT2017) => {
 
+  // const srcDir = 'src/js'
+  const srcDir = 'js'
   document.getElementsByTagName('link')[0].remove()
   /* import scripts */
   const scripts = document.getElementsByTagName('script')
-  const initialSrc = 'js/load.js'
+  const initialSrc = `${srcDir}/load.js`
   let initialTag
   for (const script of scripts)
     if (script.src.slice(-initialSrc.length) === initialSrc) {
@@ -16,7 +18,7 @@
       if (Array.isArray(files))
         for (let file of files) {
           const elm = document.createElement('script')
-          elm.src = `js/${file.name}.js`
+          elm.src = `${srcDir}/${file.name}.js`
           elm.async = file.async
           initialTag.before(elm)
         }

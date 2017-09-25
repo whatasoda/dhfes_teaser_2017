@@ -52,6 +52,7 @@
     window.sessionStorage.setItem(['postSeed'],[DHFT2017.seed])
   })
 
+  DHFT2017.title = document.getElementsByClassName('p-header__rwd-frame')[0]
   DHFT2017.speed = 35
   DHFT2017.Starter.animate()
 })(window.DHFT2017 = window.DHFT2017 || {})
