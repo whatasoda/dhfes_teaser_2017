@@ -9,7 +9,13 @@
     @content;
   }
 }
+@mixin tb-to-sp {
+  @media screen and (max-width: ($widthPC)) {
+    @content;
+  }
+}
 
+//フォント
 @mixin font-Noto {
   font-family: 'Noto Sans', sans-serif;
 }

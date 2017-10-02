@@ -3,11 +3,13 @@
   @include font-Noto;
   font-weight: bold;
   text-align: center;
-  margin-top: 45px;
+  padding-top: 45px;
   @include sp {
   }
 }
-
 .p-schedule .c-contents__heading {
   color: $black;
+}
+.p-contact .c-contents__heading {
+  color: #fff;
 }
