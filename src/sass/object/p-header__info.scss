@@ -4,7 +4,12 @@
   margin: 138px 0 0 124px;
   position: relative;
   @include sp {
-    margin: 35px auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
     width: 320px;
   }
 }
