@@ -65,7 +65,7 @@
           gl.uniform1fv(start.unif.shutMug.location, this.shutMug)
           const frame = DHFT2017.Starter.currentFrame
           const radius = Math.min(15, Math.max(Math.tan(frame / speed / 2.5 - 1.0) * 7 + 1, 1) )
-          const rotation = Math.max(Math.tan(Math.min(frame / speed / 2.5 - 0.55, Math.PI / 2 -0.000001)) * 3, 0)
+          const rotation = Math.max(Math.tan(Math.min((frame / speed - 1.375) / 2.5, Math.PI / 2 -0.000001)) * 3, 0)
           gl.uniform1f(start.unif.radius.location, radius)
           gl.uniform1f(start.unif.rotation.location, rotation)
           gl.uniform1f(start.unif.alpha.location, Math.min(9 - (DHFT2017.Starter.currentFrame / speed / 0.6), 1))

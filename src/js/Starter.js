@@ -15,6 +15,7 @@
         DHFT2017.Particle.using
       ) {
         Starter.currentFrame++
+        DHFT2017.title.style.opacity = Math.max(Math.min((Starter.currentFrame / DHFT2017.speed - 1.375), 1), 0)
         if (Starter.currentFrame > 5 * DHFT2017.speed - 50 || Starter.currentFrame < 2) {
           DHFT2017.Particle.using.calc()
           DHFT2017.Camera.using.spherical.alpha += 0.3
@@ -22,6 +23,7 @@
             (Math.pow(Math.sin(DHFT2017.Particle.using.frame * 0.003), 2) + 0.3) * Math.PI / 5
         }
         DHFT2017.RendererBase.using.render()
+
       }
       requestAnimationFrame(Starter.animate)
     },
