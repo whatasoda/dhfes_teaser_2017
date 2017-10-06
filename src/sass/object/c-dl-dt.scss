@@ -1,0 +1,8 @@
+.c-dl-dt {
+  float: left;
+  width: 50px;
+  @include sp {
+    font-size: 12px;
+    width: 36px;
+  }
+}

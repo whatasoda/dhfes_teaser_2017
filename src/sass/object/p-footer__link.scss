@@ -1,5 +1,9 @@
 .p-footer__link-item {
   margin-left: 35px;
+  @include sp {
+    margin-left: 15px;
+    font-size: 12px;
+  }
 }
 .p-footer__link-item:last-child {
   margin-left: 15px;

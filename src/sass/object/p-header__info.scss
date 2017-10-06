@@ -1,15 +1,17 @@
 .p-header__info {
   width: 380px;
   height: 494px;
-  margin: 138px 0 0 124px;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+  left: 20%;
+  transform: translateY(-50%) translateX(-50%);
   @include sp {
-    position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
     width: 320px;
+    transform: translateY(0%) translateX(0%);
   }
 }
