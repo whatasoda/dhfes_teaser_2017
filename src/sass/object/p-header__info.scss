@@ -14,4 +14,11 @@
     width: 320px;
     transform: translateY(0%) translateX(0%);
   }
+  @include tb {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: translateY(0%) translateX(0%);
+  }
 }
