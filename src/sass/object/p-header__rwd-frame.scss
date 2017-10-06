@@ -3,9 +3,9 @@
   margin: 0 auto;
   height: 100vh;
   padding: 0.1px;
+  position: relative;
   // opacity: 0.01;
   @include sp {
     width: 100%;
-    position: relative;
   }
 }

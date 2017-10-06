@@ -3,12 +3,9 @@
   margin-bottom: 24px;
   width: 500px;
   line-height: 1.75;
-}
-.p-footer__organizer__list , .p-footer__sponsor__list {
-  float: left;
-  width: 50px;
-}
-.p-footer__organizer__item , .p-footer__sponsor__item {
-  float: left;
-  width: 450px;
+  @include font-Noto;
+  @include sp {
+    margin-left: 15px;
+    width: auto;
+  }
 }

@@ -1,0 +1,9 @@
+.c-dl-dd {
+  float: left;
+  width: 450px;
+  @include sp {
+    font-size: 12px;
+    width: 284px;
+    padding-bottom: 10px;
+  }
+}

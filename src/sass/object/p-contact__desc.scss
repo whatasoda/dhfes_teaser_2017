@@ -5,4 +5,7 @@
   line-height: 1.75;
   letter-spacing: 0.02em;
   margin-bottom: 40px;
+  @include sp {
+    font-size: 14px;
+  }
 }
