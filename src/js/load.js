@@ -23,6 +23,7 @@
           initialTag.before(elm)
         }
     })([
+      {name:'initHTML',           async: false,},
       {name:'gl-matrix-min',      async: false,},
       {name:'color.json',         async: false,},
       {name:'optimiseGLMatrix',   async: false,},
