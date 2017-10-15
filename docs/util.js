@@ -1,1 +1,3 @@
-document.body.innerHTML = ''
+console.log('success!');
+const selfTag = document.getElementById('utilScript')
+selfTag.remove()
