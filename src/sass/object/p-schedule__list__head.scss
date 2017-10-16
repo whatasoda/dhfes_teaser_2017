@@ -1,0 +1,9 @@
+.p-schedule__list__head {
+  width: 120px;
+  background-color: $black;
+  position: absolute;
+  height: 40px;
+  @include sp {
+    height: 68px;
+  }
+}

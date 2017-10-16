@@ -1,0 +1,6 @@
+.c-lf-sp {
+  display: none;
+  @include sp {
+    display: block;
+  }
+}

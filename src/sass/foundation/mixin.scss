@@ -1,0 +1,24 @@
+// メディアクエリー
+@mixin tb {
+  @media screen and (min-width: $widthSP) and (max-width: ($widthPC)) {
+    @content;
+  }
+}
+@mixin sp {
+  @media screen and (max-width: ($widthSP)) {
+    @content;
+  }
+}
+@mixin tb-to-sp {
+  @media screen and (max-width: ($widthPC)) {
+    @content;
+  }
+}
+
+//フォント
+@mixin font-Noto {
+  font-family: 'Noto Sans', sans-serif;
+}
+@mixin font-Play {
+  font-family: 'Play', sans-serif;
+}

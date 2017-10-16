@@ -1,0 +1,11 @@
+.p-footer__steakholder {
+  margin-left: 35px;
+  margin-bottom: 24px;
+  width: 500px;
+  line-height: 1.75;
+  @include font-Noto;
+  @include sp {
+    margin-left: 15px;
+    width: auto;
+  }
+}
