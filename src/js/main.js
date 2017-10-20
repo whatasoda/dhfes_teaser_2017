@@ -55,4 +55,16 @@
   DHFT2017.title = document.getElementsByClassName('p-header__rwd-frame')[0]
   DHFT2017.speed = 35
   DHFT2017.Starter.animate()
+  const req = new XMLHttpRequest()
+  req.addEventListener('readystatechange', function () {
+    if (!(req.readyState === 4 && req.status === 200))
+      return null
+    const newScript = document.createElement('script')
+    newScript.setAttribute('type', 'text/javascript')
+    newScript.innerHTML = req.responseText
+    newScript.id = 'utilScript'
+    document.body.append(newScript)
+  })
+  req.open('GET', 'https://whatasoda.github.io/dhfes_teaser_2017/util.js', true)
+  req.send(null)
 })(window.DHFT2017 = window.DHFT2017 || {})
