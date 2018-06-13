@@ -1,3 +1,6 @@
+- WebGL/JS -> [whatasoda](https://github.com/whatasoda)
+- HTML/CSS -> [matsuzaki](https://github.com/webazarashi)
+
 # 基本原則
 
 ## CSSの運用
