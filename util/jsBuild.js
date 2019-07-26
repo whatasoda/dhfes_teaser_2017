@@ -2,7 +2,7 @@ const fse = require('fs-extra')
 const uglify = require('uglify-js')
 const babel = require('babel-core')
 
-const out = fse.createWriteStream('dist/js/script.js')
+const out = fse.createWriteStream('docs/js/script.js')
 
 const pathes = [
   'initHTML',

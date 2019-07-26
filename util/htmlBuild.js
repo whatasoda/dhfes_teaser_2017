@@ -2,7 +2,7 @@ const fse = require('fs-extra')
 const minify = require('html-minifier');
 
 const file = fse.readFileSync('src/index.html')
-const out = fse.createWriteStream('dist/index.html')
+const out = fse.createWriteStream('docs/index.html')
 
 const replaceItems = [
   [

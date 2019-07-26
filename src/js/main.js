@@ -23,8 +23,9 @@
   new DHFT2017.Particle(bezierCount,
     { pDensity   : [0, density], },
     { u: u, v: v, }
-  ).setCurrent()
-  window.location.hash = DHFT2017.seed
+  ).setCurrent();
+  const replaceURL = () => window.history.replaceState(null, window.title, `${window.location.href.split('#')[0]}#${DHFT2017.seed}`);
+  replaceURL();
 
   DHFT2017.Particle.reset = (keepFrame) => {
     const frame = keepFrame
@@ -35,7 +36,7 @@
       { pDensity   : [0, density], },
       { frame: frame }
     ).setCurrent()
-    window.location.hash = DHFT2017.seed
+    replaceURL();
   }
 
   container.addEventListener('click', (e) => {
